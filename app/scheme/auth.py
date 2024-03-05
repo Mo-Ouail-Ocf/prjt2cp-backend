@@ -6,7 +6,7 @@ from fastapi import Form
 class AuthRequestFrom:
     def __init__(
         self,
-        grant_type: str = Form(default=None),
+        grant_type: str = Form(regex="authorization_code"),
         client_id: Optional[str] = Form(default=None),
         client_secret: Optional[str] = Form(default=None),
         code: str = Form(),

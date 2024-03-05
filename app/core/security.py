@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from jose import jwt
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES, ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES, ALGORITHM
-from app.models.auth import AccessTokenData, RefreshTokenData
+from app.scheme.auth import AccessTokenData, RefreshTokenData
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from app.core.exceptions import credentials_exception
 

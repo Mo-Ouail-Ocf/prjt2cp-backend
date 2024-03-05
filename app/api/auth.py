@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Depends
 from app.services.auth import generate_tokens, refresh_tokens
-from app.models.auth import AuthRequestFrom, Token
+from app.scheme.auth import AuthRequestFrom, Token
 from app.core.security import oauth2_scheme
 
 

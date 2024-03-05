@@ -1,4 +1,4 @@
-from app.models.auth import AccessTokenData, RefreshTokenData, Token
+from app.scheme.auth import AccessTokenData, RefreshTokenData, Token
 from app.services.google_auth import get_google_user_info, get_google_token
 from app.core.security import create_access_token, create_refresh_token, decode_refresh_token
 from app.core.exceptions import deserialize_exception
