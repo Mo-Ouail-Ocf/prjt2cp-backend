@@ -3,7 +3,8 @@ from starlette.middleware.cors import CORSMiddleware
 from app.api.auth import router as auth_router
 from app.api.user import router as user_router
 from app.core.config import GOOGLE_CLIENT_ID
-
+from app.models import models
+from app.database import engine
 
 app = FastAPI(
     title="Backend", debug=True,
@@ -24,3 +25,6 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(user_router, prefix="/user")
+
+
+models.Base.metadata.create_all(bind=engine)
