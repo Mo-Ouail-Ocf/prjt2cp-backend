@@ -1,22 +1,28 @@
-from app.scheme.auth import AccessTokenData, RefreshTokenData, Token
-from app.services.google_auth import get_google_user_info, get_google_token
+from app.scheme.auth import Token
+from app.services.google_auth import get_google_user_info, get_google_token, get_google_pfp
 from app.core.security import create_access_token, create_refresh_token, decode_refresh_token
 from app.core.exceptions import deserialize_exception
+from sqlalchemy.orm import Session
+from app.scheme.auth import GoogleUserInfo
+from app.services.user import get_user_by_email, create_user
+from app.scheme.user import UserCreate
 
 
-async def generate_tokens(code: str, redirect_uri: str) -> Token:
+async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
     google_token = await get_google_token(code, redirect_uri)
     user_info = await get_google_user_info(google_token)
+    user_info = GoogleUserInfo(**user_info)
 
-    # user = get_user(user_info)
+    db_user = get_user_by_email(db, user_info.email)
 
-    # if not user:
-    #     user = create_user(user_info)
-    user = user_info
+    if db_user is None:
+        pfp = await get_google_pfp(user_info.picture)
+        user = UserCreate(name=user_info.name, email=user_info.email, pfp=pfp)
+        db_user = create_user(db, user)
 
     try:
-        access_token = create_access_token(AccessTokenData(**user))
-        refresh_token = create_refresh_token(RefreshTokenData(**user))
+        access_token = create_access_token(db_user.user_id)
+        refresh_token = create_refresh_token(db_user.user_id)
 
         return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
     except:
@@ -24,12 +30,9 @@ async def generate_tokens(code: str, redirect_uri: str) -> Token:
 
 
 async def refresh_tokens(refresh_token: str) -> Token:
-    refresh_token_data = decode_refresh_token(refresh_token)
-    # access_token_data = get_user_info(refresh_token_data.email)
-    access_token_data = AccessTokenData(**refresh_token_data.dict())
+    user_id = decode_refresh_token(refresh_token)
 
-    access_token = create_access_token(access_token_data)
-    refresh_token = create_refresh_token(refresh_token_data)
+    access_token = create_access_token(user_id)
+    refresh_token = create_refresh_token(user_id)
 
     return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
-

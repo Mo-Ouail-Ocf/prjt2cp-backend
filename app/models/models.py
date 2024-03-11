@@ -2,7 +2,6 @@ import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, create_engine
 from sqlalchemy.dialects.postgresql import BYTEA, TIMESTAMP
 from sqlalchemy.orm import relationship , backref
-# Assuming Base is imported from your 'database' module as you've mentioned
 from app.database import Base
 
 

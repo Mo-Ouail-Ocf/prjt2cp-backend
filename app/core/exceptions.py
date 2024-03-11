@@ -1,7 +1,5 @@
 from fastapi import HTTPException, status
 
-# TODO make good exception and status code
-
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
@@ -15,6 +13,5 @@ google_exception = HTTPException(
 
 deserialize_exception = HTTPException(
     status.HTTP_422_UNPROCESSABLE_ENTITY,
-    "Couldn't deserialize data"
+    detail="Couldn't deserialize data"
 )
-

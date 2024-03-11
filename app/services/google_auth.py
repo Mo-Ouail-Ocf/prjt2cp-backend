@@ -1,6 +1,7 @@
 import httpx
 from app.core.config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 from app.core.exceptions import google_exception
+from fastapi import HTTPException
 
 
 async def get_google_user_info(access_token):
@@ -32,3 +33,12 @@ async def get_google_token(code, redirect_uri):
             return access_token
 
         raise google_exception
+
+
+async def get_google_pfp(url) -> bytes:
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        if response.status_code == 200:
+            return response.content
+
+        return bytes()
