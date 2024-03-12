@@ -11,6 +11,11 @@ class UserCreate(UserBase):
     pfp: bytes
 
 
+class UserResponse(UserBase):
+    id: int
+    name: str
+
+
 class User(UserBase):
     id: int
     name: str

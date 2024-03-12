@@ -1,3 +1,4 @@
+from jose import JWTError
 from app.scheme.auth import Token
 from app.services.google_auth import get_google_user_info, get_google_token, get_google_pfp
 from app.core.security import create_access_token, create_refresh_token, decode_refresh_token
@@ -9,9 +10,8 @@ from app.scheme.user import UserCreate
 
 
 async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
-    google_token = await get_google_token(code, redirect_uri)
-    user_info = await get_google_user_info(google_token)
-    user_info = GoogleUserInfo(**user_info)
+    google_token: str = await get_google_token(code, redirect_uri)
+    user_info: GoogleUserInfo = await get_google_user_info(google_token)
 
     db_user = get_user_by_email(db, user_info.email)
 
@@ -24,8 +24,12 @@ async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
         access_token = create_access_token(db_user.user_id)
         refresh_token = create_refresh_token(db_user.user_id)
 
-        return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
-    except:
+        return Token(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            token_type="bearer"
+        )
+    except JWTError:
         raise deserialize_exception
 
 
@@ -35,4 +39,8 @@ async def refresh_tokens(refresh_token: str) -> Token:
     access_token = create_access_token(user_id)
     refresh_token = create_refresh_token(user_id)
 
-    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
+    return Token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        token_type="bearer"
+    )

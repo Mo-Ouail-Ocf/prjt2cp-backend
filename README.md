@@ -1,7 +1,7 @@
 # PRJP 2CP N06 BACKEND
 
 ## Get Started
-run the following commands :
+Setup vertuel environment:
 - on fedora38
 	```bash
 	python3 -m venv .venv
@@ -18,11 +18,14 @@ run the following commands :
 	pip install -r requirements.txt
 	```
 
+Init the DB:
+  ```bash
+  python3 -m app.init
+  ```
 
-to run the web server:
+Run the web server:
 ```bash
 uvicorn app:main --reload
 ```
 
-Docs:  `http://localhost:8000/docs`
-
+Check the swagger docs:  `http://localhost:8000/docs`

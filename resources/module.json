@@ -1,0 +1,931 @@
+{
+    "pgms": [
+        {
+            "id": "4",
+            "name": "1CP",
+            "modules": [
+                {
+                    "code": "ALG1",
+                    "title": "Alg\u00e8bre 1",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ALG2",
+                    "title": "Alg\u00e8bre 2",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ALSDD",
+                    "title": "Algorithmique et Structure de donn\u00e9es dynamique",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ALSDS",
+                    "title": "Algorithmique et Structures de Donn\u00e9es Statiques",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ANAL1",
+                    "title": "Analyse math\u00e9matique 1",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ANAL2",
+                    "title": "Analyse 2",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ANG1",
+                    "title": "Anglais 1",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ARCH1",
+                    "title": "Architectures des ordinateurs 1",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "BW",
+                    "title": "Bureautique et Web",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ELECT",
+                    "title": "El\u00e9ctricit\u00e9",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ELEF1",
+                    "title": "Electronique fondamentale 1",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "MECA",
+                    "title": "M\u00e9canique du point",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "SYST1",
+                    "title": "Instroduction au Syst\u00e8me d'exploitation 1",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SYST2",
+                    "title": "Introduction aux syst\u00e8mes d'exploitation 2",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "TEE",
+                    "title": "Technique d'expression \u00e9crite",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "TEO",
+                    "title": "Techniques d'expression orale",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "name": "2CP",
+            "modules": [
+                {
+                    "code": "ALG3",
+                    "title": "Alg\u00e8bre 3",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ANAL3",
+                    "title": "Analyse 3",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ANAL4",
+                    "title": "Analyse 4",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ANG2",
+                    "title": "Anglais 2",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ANG3",
+                    "title": "Anglais 3",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ARCH2",
+                    "title": "Architecture des ordinateurs 2",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "ECON",
+                    "title": "Economie",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ELEF2",
+                    "title": "Electronique fondamentale 2",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "LOGM",
+                    "title": "Logique Math\u00e9matique",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "OOE",
+                    "title": "Optique et Ondes \u00e9l\u00e9ctromagn\u00e9tiques",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "POO",
+                    "title": "Programmation Orient\u00e9e Objet",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "PRJP",
+                    "title": "Projet Pluridisciplinaire",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "PRST1",
+                    "title": "Probabilit\u00e9s et statistiques",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "PRST2",
+                    "title": "Probabilit\u00e9s et Statistiques 2",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "SFSD",
+                    "title": "Structure Fichiers et Structures de Donn\u00e9es",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "SINF",
+                    "title": "Introduction aux syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "name": "1CS",
+            "modules": [
+                {
+                    "code": "ANUM",
+                    "title": "Analyse Num\u00e9rique",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "ARCH",
+                    "title": "Architecture",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "BDD",
+                    "title": "Bases de donn\u00e9es",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "CPROJ",
+                    "title": "Conduite de projets",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IGL",
+                    "title": "Introduction au g\u00e9nie logiciel",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "LANG1",
+                    "title": "Langue anglaise 1",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "LANG2",
+                    "title": "Langue anglaise 2",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "MCSI",
+                    "title": "M\u00e9thodologies d'analyse et conception de syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "ORG",
+                    "title": "Analyse des organisations",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "PROJ",
+                    "title": "Projet",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "RES1",
+                    "title": "R\u00e9seaux 1",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "RES2",
+                    "title": "R\u00e9seaux 2",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "RO",
+                    "title": "Recherche Op\u00e9rationnelle: graphes et algorithmes",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "SEC",
+                    "title": "Introduction \u00e0 la s\u00e9curit\u00e9 informatique",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SYS1",
+                    "title": "Syst\u00e8mes d'exploitation 1",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SYS2",
+                    "title": "Syst\u00e8me d'exploitation 2",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "THP",
+                    "title": "Th\u00e9orie des langages de programmation et applications",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "name": "2ST",
+            "modules": [
+                {
+                    "code": "AL",
+                    "title": "Architectures logicielles",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ANAD",
+                    "title": "Analyse et fouille de donn\u00e9es",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "AQUA",
+                    "title": "Assurance qualit\u00e9",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "ASI",
+                    "title": "Analyse des Syst\u00e8mes d'Information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "AUSI",
+                    "title": "Audit de syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "BDA",
+                    "title": "Bases de donn\u00e9es avanc\u00e9es",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "BDM",
+                    "title": "Big data mining",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "BI",
+                    "title": "Business Intelligence",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "COFI",
+                    "title": "Comptabilit\u00e9 et Finances",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "CRM",
+                    "title": "Gestion de la Relation Client",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "ENTP",
+                    "title": "Entreprenariat et cr\u00e9ation d\u2019entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "FASI",
+                    "title": "Files d'attente et simulations",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "IHM",
+                    "title": "Interaction Homme Machine",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "IPLS",
+                    "title": "Ing\u00e9nierie des protocoles et logiciels s\u00e9curis\u00e9s",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "MPSI",
+                    "title": "Management du changement dans les projets de syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "MSSI",
+                    "title": "Ing\u00e9nierie et management de la s\u00e9curit\u00e9 des syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "PGI",
+                    "title": "Progiciels de gestion int\u00e9gr\u00e9e",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "PRJS",
+                    "title": "Projet de sp\u00e9cialit\u00e9",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "PYT",
+                    "title": "Langage de programmation Python",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "SIAD",
+                    "title": "Syst\u00e8me d'information d'aide \u00e0 la d\u00e9cision: m\u00e9thodes et outils",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SIC",
+                    "title": "Syst\u00e8mes d'information coop\u00e9ratifs",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SIG",
+                    "title": "Syst\u00e8mes d'Information G\u00e9ographiques",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SPE",
+                    "title": "Stage Pratique en Entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "TDM",
+                    "title": "Techniques de D\u00e9veloppement Mobile",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDW",
+                    "title": "Techniques de D\u00e9veloppement Web",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TICO",
+                    "title": "Technologies de l'information et de la communication en organisation",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "URSI",
+                    "title": "Urbanisation des syst\u00e8mes d'information",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                }
+            ]
+        },
+        {
+            "id": "16",
+            "name": "2SD",
+            "modules": []
+        },
+        {
+            "id": "18",
+            "name": "2CS_SPE",
+            "modules": [
+                {
+                    "code": "SPE",
+                    "title": "Stage Pratique en Entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "name": "2SQ",
+            "modules": [
+                {
+                    "code": "AL",
+                    "title": "Architectures Logicielles",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ANAD",
+                    "title": "Analyse et fouille de donn\u00e9es",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "BDDA",
+                    "title": "SGBD et Bases de Donn\u00e9es avanc\u00e9es",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "COM",
+                    "title": "Compilation",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "COMM",
+                    "title": "Communication",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "ENTP",
+                    "title": "Entreprenariat et cr\u00e9ation d\u2019entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "FAS",
+                    "title": "File d'attente et Simulation",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "HPC",
+                    "title": "Calcul Intensif",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "IHM",
+                    "title": "Interaction Homme Machine",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "IMN",
+                    "title": "Images Num\u00e9riques",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "ML",
+                    "title": "Machine learning",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "MSS",
+                    "title": "Mod\u00e8les Stochastiques et Simulation",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "OGL",
+                    "title": "Outils de G\u00e9nie Logiciel",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "OPT",
+                    "title": "Optimisation Combinatoire",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "PRJS",
+                    "title": "Projet de sp\u00e9cialit\u00e9",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "QL",
+                    "title": "Qualit\u00e9 Logicielle",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "RESA",
+                    "title": "R\u00e9seaux Avanc\u00e9s",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "RV",
+                    "title": "R\u00e9alit\u00e9 Virtuelle",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "SCI",
+                    "title": "Syst\u00e8mes Communicants et Intelligents",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SIG",
+                    "title": "Syst\u00e8mes d'Information G\u00e9ographiques",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SIGA",
+                    "title": "Syst\u00e8mes d'Information G\u00e9ographiques Avanc\u00e9s",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SPE",
+                    "title": "Stage Pratique en Entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "SSR",
+                    "title": "S\u00e9curit\u00e9 Syst\u00e8mes et R\u00e9seaux",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SYSE",
+                    "title": "Syst\u00e8mes Embarqu\u00e9s",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SYSR",
+                    "title": "Syst\u00e8mes R\u00e9partis",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "TDM",
+                    "title": "Techniques de D\u00e9veloppement Mobile",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDM1",
+                    "title": "Technologies de D\u00e9veloppement Mobile 1",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDM2",
+                    "title": "Technologies de D\u00e9veloppement Mobile 2",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDW",
+                    "title": "Techniques de D\u00e9veloppement Web",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TPRO",
+                    "title": "Th\u00e9orie de la Programmation",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TSG",
+                    "title": "Traitement de Signal",
+                    "ddc": "Math\u00e9matique pour l'Ing\u00e9nieur"
+                },
+                {
+                    "code": "VCL",
+                    "title": "Virtualisation et Cloud",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "name": "2SL",
+            "modules": [
+                {
+                    "code": "AL",
+                    "title": "Architectures Logicielles",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ANAD",
+                    "title": "Analyse et fouille de donn\u00e9es",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "BDDA",
+                    "title": "SGBD et Bases de Donn\u00e9es Avanc\u00e9es",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "BDM",
+                    "title": "Big data mining",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "COM",
+                    "title": "Compilation",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ENTP",
+                    "title": "Entreprenariat et cr\u00e9ation d\u2019entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "HPC",
+                    "title": "Calcul Intensif",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "IHM",
+                    "title": "Interaction Homme Machine",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "IPLS",
+                    "title": "Ing\u00e9nierie des protocoles et logiciels s\u00e9curis\u00e9s",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "MA",
+                    "title": "M\u00e9thodes Agiles",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "ML",
+                    "title": "Machine learning",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "OGL",
+                    "title": "Outils de G\u00e9nie Logiciel",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "PDC",
+                    "title": "Patrons de conception",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "PDJ",
+                    "title": "Python et D\u00e9veloppement Web Full Stack avec Django",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "PRJS",
+                    "title": "Projet de sp\u00e9cialit\u00e9",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "QL",
+                    "title": "Qualit\u00e9 Logicielle",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "SCI",
+                    "title": "Syst\u00e8mes Communicants et Intelligents",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                },
+                {
+                    "code": "SIG",
+                    "title": "Syst\u00e8mes d'Information G\u00e9ographiques",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SIGA",
+                    "title": "Syst\u00e8mes d'Information G\u00e9ographiques Avanc\u00e9s",
+                    "ddc": "Ing\u00e9nierie des Syst\u00e8mes d'Information"
+                },
+                {
+                    "code": "SPE",
+                    "title": "Stage Pratique en Entreprise",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "TDM1",
+                    "title": "Technologies de D\u00e9veloppement Mobile 1",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDM2",
+                    "title": "Technologies de D\u00e9veloppement Mobile 2",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TDW",
+                    "title": "Techniques de D\u00e9veloppement Web",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "TPRO",
+                    "title": "Th\u00e9orie de la Programmation",
+                    "ddc": "Ing\u00e9nierie du Logiciel"
+                },
+                {
+                    "code": "VCL",
+                    "title": "Virtualisation et Cloud",
+                    "ddc": "Infrastructure et R\u00e9seaux"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "name": "3ST",
+            "modules": [
+                {
+                    "code": "PFE",
+                    "title": "Elaboration du M\u00e9moire d'Ing\u00e9nieur",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "name": "3SL",
+            "modules": [
+                {
+                    "code": "PFE",
+                    "title": "Elaboration du M\u00e9moire d'Ing\u00e9nieur",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "name": "3SQ",
+            "modules": [
+                {
+                    "code": "PFE",
+                    "title": "Elaboration du M\u00e9moire d'Ing\u00e9nieur",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "13",
+            "name": "3SX",
+            "modules": [
+                {
+                    "code": "PFE",
+                    "title": "Elaboration du M\u00e9moire d'Ing\u00e9nieur",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "17",
+            "name": "3SD",
+            "modules": [
+                {
+                    "code": "PFE",
+                    "title": "Elaboration du M\u00e9moire d'Ing\u00e9nieur",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "31",
+            "name": "MSD",
+            "modules": [
+                {
+                    "code": "EMM",
+                    "title": "Elaboration du m\u00e9moire de Master",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IMR",
+                    "title": "Initiation \u00e0 la m\u00e9thodologie de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IVR",
+                    "title": "Innovation et valorisation de la recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "MLA",
+                    "title": "Machine learning avanc\u00e9",
+                    "ddc": "Data Science et Intelligence Artificielle"
+                },
+                {
+                    "code": "RDCR",
+                    "title": "Recherche documentaire et communication de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "14",
+            "name": "MXT",
+            "modules": [
+                {
+                    "code": "EMM",
+                    "title": "Elaboration du m\u00e9moire de Master",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "GPS",
+                    "title": "Gestion de projets scientifiques",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IMR",
+                    "title": "Initiation \u00e0 la m\u00e9thodologie de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IVR",
+                    "title": "Innovation et valorisation de la recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "RDCR",
+                    "title": "Recherche documentaire et communication de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "11",
+            "name": "MSQ",
+            "modules": [
+                {
+                    "code": "EMM",
+                    "title": "Elaboration du m\u00e9moire de Master",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "GPS",
+                    "title": "Gestion de projets scientifiques",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IMR",
+                    "title": "Initiation \u00e0 la m\u00e9thodologie de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IVR",
+                    "title": "Innovation et valorisation de la recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "RDCR",
+                    "title": "Recherche documentaire et communication de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "12",
+            "name": "MST",
+            "modules": [
+                {
+                    "code": "EMM",
+                    "title": "Elaboration du m\u00e9moire de Master",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "GPS",
+                    "title": "Gestion de projets scientifiques",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IMR",
+                    "title": "Initiation \u00e0 la m\u00e9thodologie de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IVR",
+                    "title": "Innovation et valorisation de la recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "RDCR",
+                    "title": "Recherche documentaire et communication de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        },
+        {
+            "id": "10",
+            "name": "MSL",
+            "modules": [
+                {
+                    "code": "EMM",
+                    "title": "Elaboration du m\u00e9moire de Master",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "GPS",
+                    "title": "Gestion de projets scientifiques",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IMR",
+                    "title": "Initiation \u00e0 la m\u00e9thodologie de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "IVR",
+                    "title": "Innovation et valorisation de la recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                },
+                {
+                    "code": "RDCR",
+                    "title": "Recherche documentaire et communication de recherche",
+                    "ddc": "SHSE (Sciences Humaines, Sociales et Entrepreunariat)"
+                }
+            ]
+        }
+    ]
+}

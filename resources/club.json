@@ -1,0 +1,54 @@
+{
+    "clubs": [
+        {
+            "name": "GDG",
+            "description": "Google Developers Group, Algiers Chapter.",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjU2lsIMuhaSB0xizzWvZXCdVSZO0cDFIRPvUYZEOqh4vvU=s64-p-k-no"
+        },
+        {
+            "name": "WTM",
+            "description": "A program founded by google that aims to encourage and improve the enroll",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjUOtxrDOdgry5VHg4F7OYR8tEWZQCyRdoBZZqYFJvj6VQE=s64-p-k-no"
+        },
+        {
+            "name": "Sourire à l'innocence",
+            "description": "Club à but non lucratif pour rendre le sourire aux enfants qui l'ont perdu",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjV8rKszi0YNPIvkldAx4It1JVXhvsLQmlVKUmijWPITbnU=s64-p-k-no"
+        },
+        {
+            "name": "ETIC",
+            "description": "ETIC est un club estudiantin basé à l'Ecole Supérieure d'Informatique visant à rapprocher l'étudiant du monde entrepreneurial.",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjUFyA94MV8goDS51z3Im4BgJqiHeTnEKW_4DbyXa5op9dI=s64-p-k-no"
+        },
+        {
+            "name": "CSE",
+            "description": "Le CSE est un club créé par des étudiants de l'ESI qui se sont réunis dans le but de donner une nouvelle perspective à leurs études.",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjW8mjnY1w-sOJ6XsFLftQEhnWDY6475V76yNdwrUKjgcU8p=s64-p-k-no"
+        },
+        {
+            "name": "SOAI_ALGIERS",
+            "description": "School of Ai - Algiers is a local group of Ai wizards that teaches about Ai technology and shares ideas and techniques.Le CSE est un club créé par des étudiants de l'ESI qui se sont réunis dans le but de donner une nouvelle perspective à leurs études.",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjW-JUsWhREkq6z90Z_9cZPrdRqkvghgSwp8ihGsQzvsvQ=s64-p-k-no"
+        },
+        {
+            "name": "SHELLMATES",
+            "description": "Algerian students & cybersecurity enthusiasts community /* WHERE THERE IS A SHELL, THERE IS A WAY */",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVFMwzTjzgK2IkgEusP9w9fO8PJk76z79ApzP5Ej_h8mH8=s64-p-k-no"
+        },
+        {
+            "name": "CACE",
+            "description": "Le C.A.C.E a été fondé en 2016 par des étudiants-artistes de l'ESI, avec le but d'alléger le stress de la vie estudiantine. À travers de nombreux événements et formations pertinentes aux arts et cultures diverses.",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVSyqFsGulhaqcEo0XPInBKusWjB_gMBBJyPMSXDEQeWAA=s64-p-k-no"
+        },
+        {
+            "name": "ASTROTECH",
+            "description": "Club d'astronomie de l'École Nationale Supérieure d'Informatique (ESI ex INI)",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVIbT11Kjsqllr-RrWP9fP4BgKL5-uT5Hdg1TI9PxbwOw=s64-p-k-no"
+        },
+        {
+            "name": "SEC",
+            "description": "Sport & Entertainment Club of the Higher National School of Computer Science (ESI)",
+            "pfp_url" : "https://lh3.googleusercontent.com/a-/ALV-UjX8Iqq4tIyGgnnkEuiwdsCZLllHlZqScYmHl3zaTViJ0Zk=s40-p"
+        }
+    ]
+}
