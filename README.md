@@ -20,7 +20,7 @@ Setup vertuel environment:
 
 Init the DB:
   ```bash
-  python3 -m app.init
+  python3 -m init
   ```
 
 Run the web server:
@@ -29,3 +29,5 @@ uvicorn app:main --reload
 ```
 
 Check the swagger docs:  `http://localhost:8000/docs`
+
+NOTE: Use ruff for formatting
