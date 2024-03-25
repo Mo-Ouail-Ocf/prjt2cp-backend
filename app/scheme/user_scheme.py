@@ -23,4 +23,4 @@ class User(UserBase):
     last_activity: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -1,10 +1,14 @@
 from sqlalchemy.orm import Session
-from app.models.models import User
-from app.scheme.user import UserCreate
+from app.models import User
+from app.scheme.user_scheme import UserCreate
 
 
 def get_user_by_email(db: Session, email: str) -> User:
     return db.query(User).filter(User.esi_email == email).first()
+
+
+def get_user_by_id(db: Session, id: int) -> User:
+    return db.query(User).filter(User.user_id == id).first()
 
 
 def create_user(db: Session, user: UserCreate) -> User:
@@ -13,10 +17,6 @@ def create_user(db: Session, user: UserCreate) -> User:
     db.commit()
     db.refresh(user)
     return user
-
-
-def get_user_by_id(db: Session, id: int) -> User:
-    return db.query(User).filter(User.user_id == id).first()
 
 
 def update_pfp(db: Session, user: User, pfp: bytes) -> User:
