@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from jose import ExpiredSignatureError, jwt
-from jose.exceptions import JWTError
+from jose import jwt
+from jose.exceptions import JWTClaimsError
 from app.core.config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     ACCESS_TOKEN_SECRET_KEY,
@@ -9,7 +9,6 @@ from app.core.config import (
     ALGORITHM,
 )
 from fastapi.security import OAuth2AuthorizationCodeBearer
-from app.core.exceptions import InvalidCredentialsError, ExpiredCredentialsError
 from passlib.context import CryptContext
 
 
@@ -50,33 +49,20 @@ def create_refresh_token(client_id: int):
 
 
 def decode_refresh_token(refresh_token: str) -> int:
-    try:
-        payload = jwt.decode(
-            refresh_token, REFRESH_TOKEN_SECRET_KEY, algorithms=[ALGORITHM]
-        )
-        client_id: str | None = payload.get("sub")
-        if client_id is None:
-            raise InvalidCredentialsError
-        return int(client_id)
-    except ExpiredSignatureError:
-        raise ExpiredCredentialsError
-
-    except JWTError:
-        raise InvalidCredentialsError
+    payload = jwt.decode(
+        refresh_token, REFRESH_TOKEN_SECRET_KEY, algorithms=[ALGORITHM]
+    )
+    client_id: str | None = payload.get("sub")
+    if client_id is None:
+        raise JWTClaimsError("Invalid signature")
+    return int(client_id)
 
 
 def decode_access_token(access_token: str) -> int:
-    try:
-        payload = jwt.decode(
-            access_token, ACCESS_TOKEN_SECRET_KEY, algorithms=[ALGORITHM]
-        )
-        client_id: str | None = payload.get("sub")
-        if client_id is None:
-            raise InvalidCredentialsError
-        return int(client_id)
-
-    except ExpiredSignatureError:
-        raise ExpiredCredentialsError
-
-    except JWTError:
-        raise InvalidCredentialsError
+    payload = jwt.decode(
+        access_token, ACCESS_TOKEN_SECRET_KEY, algorithms=[ALGORITHM]
+    )
+    client_id: str | None = payload.get("sub")
+    if client_id is None:
+        raise JWTClaimsError("Invalid signature")
+    return int(client_id)

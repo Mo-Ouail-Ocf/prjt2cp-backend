@@ -3,7 +3,6 @@ from app.scheme.auth_scheme import Token
 from app.services.google_auth_service import (
     get_google_user_info,
     get_google_token,
-    get_google_pfp,
 )
 from app.core.security import (
     create_access_token,
@@ -24,8 +23,7 @@ async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
     db_user = user_crud.get_user_by_email(db, user_info.email)
 
     if db_user is None:
-        pfp = await get_google_pfp(user_info.picture)
-        user = UserCreate(name=user_info.name, email=user_info.email, pfp=pfp)
+        user = UserCreate(name=user_info.name, email=user_info.email, pfp=user_info.picture)
         db_user = user_crud.create_user(db, user)
 
     access_token = create_access_token(db_user.user_id)

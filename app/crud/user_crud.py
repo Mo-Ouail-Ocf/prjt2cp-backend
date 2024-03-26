@@ -1,3 +1,4 @@
+from pydantic import AnyHttpUrl
 from sqlalchemy.orm import Session
 from app.core.security import hash_passowrd
 from app.models import User
@@ -20,7 +21,7 @@ def create_user(db: Session, user: UserCreate) -> User:
     return user
 
 
-def update_pfp(db: Session, user: User, pfp: bytes) -> User:
+def update_pfp(db: Session, user: User, pfp: AnyHttpUrl) -> User:
     user.profile_picture = pfp
     db.commit()
     return user

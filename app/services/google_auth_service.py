@@ -1,9 +1,6 @@
 import httpx
 from app.core.config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
-from app.core.exceptions import (
-    InvalidGoogleCridentialsError,
-    SlowConnectionError,
-)
+from app.core.exceptions import InvalidGoogleCridentialsError
 from app.scheme.auth_scheme import GoogleUserInfo
 
 
@@ -11,12 +8,9 @@ async def get_google_user_info(access_token: str) -> GoogleUserInfo:
     headers = {"Authorization": f"Bearer {access_token}"}
 
     async with httpx.AsyncClient() as client:
-        try:
-            response = await client.get(
-                "https://www.googleapis.com/oauth2/v3/userinfo", headers=headers
-            )
-        except httpx.TimeoutException:
-            raise SlowConnectionError
+        response = await client.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo", headers=headers
+        )
 
         if response.status_code == 200:
             return GoogleUserInfo(**response.json())
@@ -35,12 +29,9 @@ async def get_google_token(code, redirect_uri) -> str:
     }
 
     async with httpx.AsyncClient() as client:
-        try:
-            response = await client.post(
-                "https://oauth2.googleapis.com/token", data=data, headers=headers
-            )
-        except httpx.TimeoutException:
-            raise SlowConnectionError
+        response = await client.post(
+            "https://oauth2.googleapis.com/token", data=data, headers=headers
+        )
 
         if response.status_code == 200:
             token_data = response.json()
@@ -48,12 +39,3 @@ async def get_google_token(code, redirect_uri) -> str:
             return access_token
 
         raise InvalidGoogleCridentialsError
-
-
-async def get_google_pfp(url) -> bytes:
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        if response.status_code == 200:
-            return response.content
-
-        return bytes()

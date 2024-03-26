@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, AnyHttpUrl
 from datetime import datetime
 
 
@@ -8,18 +8,19 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     name: str
-    pfp: bytes
+    pfp: AnyHttpUrl
 
 
 class UserResponse(UserBase):
     id: int
     name: str
+    pfp: AnyHttpUrl
 
 
 class User(UserBase):
     id: int
     name: str
-    pfp: bytes
+    pfp: AnyHttpUrl
     last_activity: datetime
 
     class Config:

@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.dialects.postgresql import BYTEA, TIMESTAMP
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -10,7 +10,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True)
     name = Column(String)
     esi_email = Column(String, unique=True)
-    profile_picture = Column(BYTEA)
+    profile_picture = Column(String)
     last_activity = Column(TIMESTAMP(timezone=True), default=datetime.datetime.utcnow)
     hash_passoword = Column(String, nullable=True, default=None)
 
