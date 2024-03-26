@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Form
 from app.dependencies import get_current_user, get_db
 from app.scheme.user_scheme import UserResponse
 from sqlalchemy.orm import Session
-from app.services.user_service import rename_user, get_user
+from app.services.user_service import rename_user, get_user, set_password
 
 
 router = APIRouter()
@@ -22,4 +22,14 @@ async def name(
     db: Session = Depends(get_db),
     name: str = Form(),
 ):
-    return rename_user(user_id, db, name)
+    return rename_user(user_id, name, db)
+
+
+@router.put("/password", response_model=UserResponse)
+async def change_password(
+    user_id: Annotated[int, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+    old_password: str = Form(default=""),
+    new_password: str = Form(),
+):
+    return set_password(user_id, old_password, new_password, db)

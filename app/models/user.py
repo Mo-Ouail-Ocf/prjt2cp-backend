@@ -12,6 +12,7 @@ class User(Base):
     esi_email = Column(String, unique=True)
     profile_picture = Column(BYTEA)
     last_activity = Column(TIMESTAMP(timezone=True), default=datetime.datetime.utcnow)
+    hash_passoword = Column(String, nullable=True, default=None)
 
     project_users = relationship("ProjectUser", back_populates="user")
     owned_projects = relationship("Project", back_populates="owner")

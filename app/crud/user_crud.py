@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from app.core.security import hash_passowrd
 from app.models import User
 from app.scheme.user_scheme import UserCreate
 
@@ -27,5 +28,11 @@ def update_pfp(db: Session, user: User, pfp: bytes) -> User:
 
 def update_name(db: Session, user: User, name: str) -> User:
     user.name = name
+    db.commit()
+    return user
+
+
+def update_password(db: Session, user: User, password: str) -> User:
+    user.hash_passoword = hash_passowrd(password)
     db.commit()
     return user

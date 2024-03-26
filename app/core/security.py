@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from jose import ExpiredSignatureError, jwt
-from jose.exceptions import JWTClaimsError, JWTError
+from jose.exceptions import JWTError
 from app.core.config import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     ACCESS_TOKEN_SECRET_KEY,
@@ -10,6 +10,7 @@ from app.core.config import (
 )
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from app.core.exceptions import InvalidCredentialsError, ExpiredCredentialsError
+from passlib.context import CryptContext
 
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
@@ -22,6 +23,16 @@ oauth2_scheme = OAuth2AuthorizationCodeBearer(
         "email": "Email address",
     },
 )
+
+password_contex = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def hash_passowrd(password: str) -> str:
+    return password_contex.hash(password)
+
+
+def verify_password(password: str, hash: str) -> bool:
+    return password_contex.verify(password, hash)
 
 
 def create_access_token(client_id: int):
@@ -50,7 +61,7 @@ def decode_refresh_token(refresh_token: str) -> int:
     except ExpiredSignatureError:
         raise ExpiredCredentialsError
 
-    except (JWTClaimsError, JWTError):
+    except JWTError:
         raise InvalidCredentialsError
 
 
@@ -67,5 +78,5 @@ def decode_access_token(access_token: str) -> int:
     except ExpiredSignatureError:
         raise ExpiredCredentialsError
 
-    except (JWTClaimsError, JWTError):
+    except JWTError:
         raise InvalidCredentialsError

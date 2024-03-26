@@ -10,6 +10,7 @@ rest_router.include_router(
     prefix="/auth",
     tags=["AUTH"],
     responses={
+        401: {"description": "Coudn't validate credentials"},
         417: {"description": "Coudn't validate google user"},
         504: {"description": "Couldn't retrieve data"},
     },

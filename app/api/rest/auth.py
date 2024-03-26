@@ -1,6 +1,11 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
-from app.services.auth_service import generate_tokens, refresh_tokens
+from fastapi.security import OAuth2PasswordRequestForm
+from app.services.auth_service import (
+    generate_tokens,
+    refresh_tokens,
+    login_with_credentials,
+)
 from app.scheme.auth_scheme import AuthRequestFrom, Token
 from app.core.security import oauth2_scheme
 from sqlalchemy.orm import Session
@@ -22,3 +27,13 @@ async def refresh_access_token(
     refresh_token: Annotated[str, Depends(oauth2_scheme)],
 ) -> Token:
     return await refresh_tokens(refresh_token)
+
+
+@router.post("/login")
+async def login(
+    login_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Session = Depends(get_db),
+) -> Token:
+    username = login_data.username
+    password = login_data.password
+    return await login_with_credentials(db, username, password)
