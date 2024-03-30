@@ -59,9 +59,7 @@ def decode_refresh_token(refresh_token: str) -> int:
 
 
 def decode_access_token(access_token: str) -> int:
-    payload = jwt.decode(
-        access_token, ACCESS_TOKEN_SECRET_KEY, algorithms=[ALGORITHM]
-    )
+    payload = jwt.decode(access_token, ACCESS_TOKEN_SECRET_KEY, algorithms=[ALGORITHM])
     client_id: str | None = payload.get("sub")
     if client_id is None:
         raise JWTClaimsError("Invalid signature")

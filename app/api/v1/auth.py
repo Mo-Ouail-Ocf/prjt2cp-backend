@@ -17,8 +17,7 @@ router = APIRouter()
 
 @router.post("/token")
 async def token(
-    auth_data: Annotated[AuthRequestFrom, Depends()],
-    db: Session = Depends(get_db)
+    auth_data: Annotated[AuthRequestFrom, Depends()], db: Session = Depends(get_db)
 ) -> Token:
     return await generate_tokens(auth_data.code, auth_data.redirect_uri, db)
 

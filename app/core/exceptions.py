@@ -1,12 +1,11 @@
-from fastapi import HTTPException, WebSocket, status, Request 
+from fastapi import HTTPException, WebSocket, status, Request
 from fastapi.responses import JSONResponse
 from jose import JWTError, ExpiredSignatureError
 from httpx import RequestError
 
 
 InvalidGoogleCridentialsError = HTTPException(
-    status.HTTP_417_EXPECTATION_FAILED,
-    detail="Couldn't validate google user"
+    status.HTTP_417_EXPECTATION_FAILED, detail="Couldn't validate google user"
 )
 
 InvalidCredentialsError = HTTPException(
@@ -34,18 +33,15 @@ async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
     return JSONResponse(
         status_code=code,
         content={"detail": f"JWT: {exc}"},
-    ) 
+    )
 
 
 async def httpx_error_hander(request: Request, exc: RequestError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_504_GATEWAY_TIMEOUT,
         content={"detail": f"Couldn't retrieve data"},
-    ) 
+    )
 
 
 async def jwt_ws_error_handler(websocket: WebSocket, exc: JWTError) -> None:
-    await websocket.close(
-        code=status.WS_1008_POLICY_VIOLATION,
-        reason=f"JWT: {exc}"
-    )
+    await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason=f"JWT: {exc}")

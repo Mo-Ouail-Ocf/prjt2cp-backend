@@ -11,7 +11,9 @@ def rename_user(user_id: int, name: str, db: Session) -> UserResponse:
         raise InvalidCredentialsError
 
     user = user_crud.update_name(db, user, name)
-    return UserResponse(id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture)
+    return UserResponse(
+        id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture
+    )
 
 
 def get_user(user_id: int, db: Session) -> UserResponse:
@@ -19,7 +21,9 @@ def get_user(user_id: int, db: Session) -> UserResponse:
     if user is None:
         raise InvalidCredentialsError
 
-    return UserResponse(id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture)
+    return UserResponse(
+        id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture
+    )
 
 
 def set_password(
@@ -37,4 +41,6 @@ def set_password(
 
     user = user_crud.update_password(db, user, new_password)
 
-    return UserResponse(id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture)
+    return UserResponse(
+        id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture
+    )
