@@ -4,7 +4,6 @@ from jose.exceptions import JWTError
 from app.core.exceptions import httpx_error_hander, jwt_error_handler
 from starlette.middleware.cors import CORSMiddleware
 from app.api import router
-from app.websocket import router as ws
 from app.core.config import GOOGLE_CLIENT_ID
 from app.core.database import Base, engine
 
@@ -28,7 +27,6 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="")
-app.include_router(ws, prefix="/ws")
 
 app.add_exception_handler(JWTError, jwt_error_handler)
 app.add_exception_handler(TimeoutException, httpx_error_hander)

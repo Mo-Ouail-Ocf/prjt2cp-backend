@@ -1,30 +1,40 @@
-from pydantic import BaseModel
 from datetime import datetime
-from app.scheme.user_scheme import User
+from pydantic import BaseModel
+from typing import List, Optional
 
+class UserBase(BaseModel):
+    user_id: int
+    name: str
+    email: str
+    image: Optional[str] = None
 
-class ProjectBase(BaseModel):
-    id: int
-
-
-class ProjectCreate(ProjectBase):
-    title: str
-    description: str
-    owner_id: int
-
-
-class ProjectResponse(ProjectCreate):
-    status: str
-    creation_date: datetime
-
-    resource_id: int
-
-
-class Project(ProjectResponse):
-    owner: User
-    project_users: list[User]
-    # sessions
-    # resource
+class ProjectUserDisplay(BaseModel):
+    user: UserBase
+    role: str
+    invitation_status: str
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+
+class ProjectCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    status: str
+    owner_id: int
+
+class ProjectUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[str] = None
+
+class ProjectDisplay(BaseModel):
+    project_id: int
+    title: str
+    description: Optional[str] = None
+    status: str
+    creation_date: datetime
+    owner_id: int
+    participants: List[ProjectUserDisplay] = []
+
+    class Config:
+        orm_mode = True
