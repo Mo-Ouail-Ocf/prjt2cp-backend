@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 from app.api.v1.auth import router as auth_router
 from app.api.v1.user import router as user_router
+from app.api.v1.websocket import router as ws_router
 
 
-rest_router = APIRouter()
+router = APIRouter()
 
-rest_router.include_router(
+router.include_router(
     auth_router,
     prefix="/auth",
     tags=["AUTH"],
@@ -15,7 +16,8 @@ rest_router.include_router(
         504: {"description": "Couldn't retrieve data"},
     },
 )
-rest_router.include_router(
+
+router.include_router(
     user_router,
     prefix="/user",
     tags=["USER"],
@@ -24,3 +26,5 @@ rest_router.include_router(
         403: {"description": "Credentials expired"},
     },
 )
+
+router.include_router(ws_router, prefix="/ws")

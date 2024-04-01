@@ -14,8 +14,8 @@ from passlib.context import CryptContext
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
     authorizationUrl="https://accounts.google.com/o/oauth2/auth",
-    tokenUrl="/auth/token",
-    refreshUrl="/auth/refresh",
+    tokenUrl="/v1/auth/token",
+    refreshUrl="/v1/auth/refresh",
     scopes={
         "openid": "OpenID Connect",
         "profile": "User profile",
