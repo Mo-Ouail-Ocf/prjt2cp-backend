@@ -78,47 +78,28 @@ def get_owned_projects(db: Session, user_id: int) -> List[ProjectDisplay]:
     return owned_projects
 
 def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]:
-    # Fetch projects excluding those where the user is the owner
-    projects = db.query(Project)\
-        .join(ProjectUser)\
-        .filter(ProjectUser.user_id == user_id, ProjectUser.role != "owner")\
-        .options(
-            joinedload(Project.project_users).joinedload(ProjectUser.user),
-            joinedload(Project.resource)
-        )\
-        .distinct()\
-        .all()
+    projects = (db.query(Project)
+                .join(ProjectUser, ProjectUser.project_id == Project.project_id)
+                .filter(ProjectUser.user_id == user_id, Project.owner_id != user_id)  # Exclude projects where the user is the owner
+                .options(
+                    joinedload(Project.project_users).joinedload(ProjectUser.user),
+                    contains_eager(Project.resource)
+                )
+                .distinct()
+                .all())
 
     participated_projects = []
     for project in projects:
         # Construct participants list
         participants = [
-            {
-                "user": {
-                    "user_id": pu.user.user_id,  # assuming user_id is the primary key in User model
-                    "name": pu.user.name,
-                    "email": pu.user.esi_email,  # adjust attribute name as necessary
-                    "image": pu.user.profile_picture  # adjust attribute name as necessary
-                },
-                "role": pu.role,
-                "invitation_status": pu.invitation_status
-            }
-            for pu in project.project_users
+            ProjectUserDisplay(
+                user=UserBase.from_orm(pu.user),
+                role=pu.role,
+                invitation_status=pu.invitation_status
+            )
+            for pu in project.project_users if pu.user_id != project.owner_id  # Optionally, exclude the owner from the participants list
         ]
 
-        # Construct resource data if exists
-        resource_data = None
-        if project.resource:
-            resource_data = {
-                "resource_id": project.resource.resource_id,
-                "name": project.resource.name,
-                "type": project.resource.type,
-                "level": project.resource.level,
-                "description": project.resource.description,
-                # Assume conversion of BYTEA to a string URL or data URI for photo
-                "photo": "data:image/jpeg;base64," + str(project.resource.photo) if project.resource.photo else None
-            }
-        
         # Prepare project data including resource and participants
         project_data = ProjectDisplay(
             project_id=project.project_id,
@@ -127,8 +108,8 @@ def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]
             status=project.status,
             creation_date=project.creation_date,
             owner_id=project.owner_id,
-            resource=resource_data,  # Assuming ProjectDisplay schema can accept this structure
-            participants=participants  # Assuming ProjectDisplay schema can accept this structure
+            resource=ResourceDisplay.from_orm(project.resource) if project.resource else None,
+            participants=participants
         )
         participated_projects.append(project_data)
 
