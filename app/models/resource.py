@@ -11,6 +11,6 @@ class Resource(Base):
     type = Column(String)
     level = Column(String, nullable=True)
     description = Column(Text, nullable=True)
-    photo = Column(BYTEA, nullable=True)
+    photo = Column(String, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.user_id"), nullable=True)
     owner = relationship("User", back_populates="owned_resources")

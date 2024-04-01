@@ -13,7 +13,7 @@ class IdeationRoom:
     async def broadcast(self, message: dict, message_type: str):
         for user_ws in self.active_users:
             await user_ws.send_json({
-                "type": message_type,
+                "type": message_type, 
                 **message
             })
 

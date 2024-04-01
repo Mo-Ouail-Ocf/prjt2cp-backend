@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.websocket.room_manager import room_manager
 from app.core.security import get_current_user
 from app.core.database import get_db
-from app.crud import save_idea  # Assume this is a function you've defined to save ideas
+from app.crud import save_idea
 
 router = APIRouter()
 
