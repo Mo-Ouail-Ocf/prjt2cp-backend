@@ -2,9 +2,19 @@
 from sqlalchemy.orm import Session
 from typing import List
 from app.crud import project_crud
-from app.crud.project_crud import create_project, update_project, delete_project, get_owned_projects, get_participated_projects,invite_user_to_project
+from app.crud.project_crud import (
+    create_project,
+    update_project,
+    delete_project,
+    get_owned_projects,
+    get_participated_projects,
+    invite_user_to_project,
+)
 from app.models.project import Project
-from app.models.project_user import ProjectUser  # Ensure this import matches your project structure
+from app.models.project_user import (
+    ProjectUser,
+)  # Ensure this import matches your project structure
+
 
 def create_and_return_project(db: Session, project_data: dict) -> Project:
     # Business logic before creating a project can be added here
@@ -39,10 +49,17 @@ def read_pending_invitations(user_id: int, db: Session):
 
 def invite_user(db: Session, project_id: int, user_id: int, role: str) -> dict:
     # Here you can add any business logic, such as checking if the user is already part of the project
-    project_user = invite_user_to_project(db, project_id, user_id, role, invitation_status="pending")
+    project_user = invite_user_to_project(
+        db, project_id, user_id, role, invitation_status="pending"
+    )
     return {"message": f"User {user_id} invited to project {project_id} as {role}"}
 
-def handle_invitation_response(db: Session, project_id:int,user_id: int,accept: bool) -> ProjectUser:
+
+def handle_invitation_response(
+    db: Session, project_id: int, user_id: int, accept: bool
+) -> ProjectUser:
     status = "accepted" if accept else "refused"
-    project_user = project_crud.update_invitation_status(db, project_id,user_id, status)
+    project_user = project_crud.update_invitation_status(
+        db, project_id, user_id, status
+    )
     return project_user

@@ -182,16 +182,25 @@ def get_pending_invitations(db: Session, user_id: int):
     )
     return result
 
-def get_users(db:Session,project_id:int):
-    return db.query(User).join(ProjectUser).filter(ProjectUser.project_id == project_id).all()
 
-def update_invitation_status(db: Session, project_id: int, user_id: int, status: str) -> ProjectUser:
-    project_user = db.query(ProjectUser).filter(
-        ProjectUser.project_id == project_id,
-        ProjectUser.user_id == user_id
-    ).first()
+def get_users(db: Session, project_id: int):
+    return (
+        db.query(User)
+        .join(ProjectUser)
+        .filter(ProjectUser.project_id == project_id)
+        .all()
+    )
+
+
+def update_invitation_status(
+    db: Session, project_id: int, user_id: int, status: str
+) -> ProjectUser:
+    project_user = (
+        db.query(ProjectUser)
+        .filter(ProjectUser.project_id == project_id, ProjectUser.user_id == user_id)
+        .first()
+    )
     project_user.invitation_status = status
     db.commit()
     db.refresh(project_user)
     return project_user
-

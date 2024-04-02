@@ -73,9 +73,11 @@ class PendingInvitationInfo(BaseModel):
     creator_email: EmailStr
 
     class Config:
-        from_attributes=True
+        from_attributes = True
+
 
 class UpdateInvitation(BaseModel):
-    status:bool
+    status: bool
+
     class Config:
-        from_attributes=True
+        from_attributes = True

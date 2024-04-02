@@ -15,13 +15,16 @@ async def send_invitation_email(
         subject=f"Invitation to join the project: {project_name}",
         recipients=[recipient_email],  # FastAPI-Mail expects a list of recipients
         body=html,
-        subtype="html"
+        subtype="html",
     )
 
     fm = FastMail(mail_config)
     await fm.send_message(message)
 
-async def send_invitation_response_email(creator_email: str, project_name: str, responder_name: str, response: str):
+
+async def send_invitation_response_email(
+    creator_email: str, project_name: str, responder_name: str, response: str
+):
     response_msg = "accepted" if response == "accepted" else "refused"
     html = f"""
     <p>Hi,</p>
@@ -32,7 +35,7 @@ async def send_invitation_response_email(creator_email: str, project_name: str, 
         subject=f"Project invitation {response_msg}: {project_name}",
         recipients=[creator_email],
         body=html,
-        subtype="html"
+        subtype="html",
     )
 
     fm = FastMail(mail_config)

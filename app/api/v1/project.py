@@ -1,8 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from app.dependencies.database import get_db  
-from app.scheme.project_scheme import ProjectCreate, ProjectUpdate, ProjectDisplay,PendingInvitationInfo,ProjectInvitationCreate,ProjectInvitationResponse,UpdateInvitation
+from app.dependencies.database import get_db
+from app.scheme.project_scheme import (
+    ProjectCreate,
+    ProjectUpdate,
+    ProjectDisplay,
+    PendingInvitationInfo,
+    ProjectInvitationCreate,
+    ProjectInvitationResponse,
+    UpdateInvitation,
+)
 from app.services import project_service
 from app.services.project_service import (
     create_and_return_project,
@@ -17,7 +25,11 @@ from app.dependencies.user import get_current_user
 from app.services.user_service import get_user
 from app.crud.user_crud import get_user_by_email
 from app.crud.project_crud import get_users
-from app.services.email_service import send_invitation_email,send_invitation_response_email
+from app.services.email_service import (
+    send_invitation_email,
+    send_invitation_response_email,
+)
+
 router = APIRouter()
 
 
@@ -111,14 +123,18 @@ def read_pending_invitations(
     ]
 
 
-@router.put("/{project_id}/invite",response_model=ProjectInvitationResponse)
-async def invite(project_id:int,email:ProjectInvitationCreate,
-                      db:Session=Depends(get_db),sender_id:int=Depends(get_current_user)):
-    project = get_project(db,project_id)
+@router.put("/{project_id}/invite", response_model=ProjectInvitationResponse)
+async def invite(
+    project_id: int,
+    email: ProjectInvitationCreate,
+    db: Session = Depends(get_db),
+    sender_id: int = Depends(get_current_user),
+):
+    project = get_project(db, project_id)
     if project is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND,detail="project not found")
-    user = get_user(sender_id,db)
-    if project.owner_id != sender_id :
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="project not found")
+    user = get_user(sender_id, db)
+    if project.owner_id != sender_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     receiver = get_user_by_email(db, str(email.email))
     if receiver is None:
@@ -131,20 +147,35 @@ async def invite(project_id:int,email:ProjectInvitationCreate,
     message = invite_user(db, project_id, receiver.user_id, role="contributor")
     await send_invitation_email(str(email.email), project.title, user.name)
     return ProjectInvitationResponse(message=message["message"])
-'''
+
+
+"""
 this function must be testes as soon as possible
-'''
-@router.post("/{project_id}/invite",response_model=ProjectInvitationResponse)
-async def handle_invitation(project_id:int,update_invitation:UpdateInvitation,db:Session=Depends(get_db),user_id:int=Depends(get_current_user)):
-    project = get_project(db,project_id)
+"""
+
+
+@router.post("/{project_id}/invite", response_model=ProjectInvitationResponse)
+async def handle_invitation(
+    project_id: int,
+    update_invitation: UpdateInvitation,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_current_user),
+):
+    project = get_project(db, project_id)
     if project is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND,detail="project not found")
-    user = get_user(user_id,db)
-    users = get_users(db,project_id)
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="project not found")
+    user = get_user(user_id, db)
+    users = get_users(db, project_id)
     if user not in users:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED,detail="user was not invited to the project")
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED, detail="user was not invited to the project"
+        )
     if user.user_id == project.owner_id:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST,detail="the user is the creator of the project")
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST, detail="the user is the creator of the project"
+        )
     creator = get_user(project.owner_id)
-    await send_invitation_response_email(creator.email,project.title,user.name,update_invitation.status)
+    await send_invitation_response_email(
+        creator.email, project.title, user.name, update_invitation.status
+    )
     return ProjectInvitationResponse("Handling invitation success")

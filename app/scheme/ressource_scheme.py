@@ -17,4 +17,4 @@ class ResourceDisplay(BaseModel):
     description: Optional[str] = None
 
     class Config:
-        from_attributes=True
+        from_attributes = True
