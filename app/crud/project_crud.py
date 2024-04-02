@@ -51,7 +51,7 @@ def get_owned_projects(db: Session, user_id: int) -> List[ProjectDisplay]:
     # Fetch projects owned by the user, including their resources and participants
     projects = (
         db.query(Project)
-        .join(Project.resource)  # Explicitly join the Resource table
+        .join(Project.resource)
         .options(
             contains_eager(
                 Project.resource
@@ -80,7 +80,6 @@ def get_owned_projects(db: Session, user_id: int) -> List[ProjectDisplay]:
             if pu.user_id != user_id  # Exclude the owner from the participants list
         ]
 
-        # Prepare project data including resource and participants
         project_data = ProjectDisplay(
             project_id=project.project_id,
             title=project.title,
@@ -102,9 +101,7 @@ def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]
     projects = (
         db.query(Project)
         .join(ProjectUser, ProjectUser.project_id == Project.project_id)
-        .filter(
-            ProjectUser.user_id == user_id, Project.owner_id != user_id
-        )  # Exclude projects where the user is the owner
+        .filter(ProjectUser.user_id == user_id, Project.owner_id != user_id)
         .options(
             joinedload(Project.project_users).joinedload(ProjectUser.user),
             contains_eager(Project.resource),
@@ -123,11 +120,9 @@ def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]
                 invitation_status=pu.invitation_status,
             )
             for pu in project.project_users
-            if pu.user_id
-            != project.owner_id  # Optionally, exclude the owner from the participants list
+            if pu.user_id != project.owner_id
         ]
 
-        # Prepare project data including resource and participants
         project_data = ProjectDisplay(
             project_id=project.project_id,
             title=project.title,

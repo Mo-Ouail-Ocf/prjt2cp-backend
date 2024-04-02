@@ -25,7 +25,7 @@ class ResourceDisplay(BaseModel):
     type: str
     level: Optional[str] = None
     description: Optional[str] = None
-    photo: Optional[str] = None  # Assuming this is how you store binary data
+    photo: Optional[str] = None 
 
     class Config:
         from_attributes = True
@@ -51,7 +51,7 @@ class ProjectDisplay(BaseModel):
     status: str
     creation_date: datetime
     owner_id: int
-    resource: Optional[ResourceDisplay] = None  # Include the resource
+    resource: Optional[ResourceDisplay] = None  
     participants: List[ProjectUserDisplay] = []
 
     class Config:

@@ -39,7 +39,6 @@ def create_project(
     db: Session = Depends(get_db),
     user_id: int = Depends(get_current_user),
 ):
-    # Assuming the project creation data does not include the owner_id, we set it here.
     project_data_with_owner = project_create.model_dump()
     project_data_with_owner["owner_id"] = user_id
     project = create_and_return_project(db, project_data_with_owner)
@@ -102,7 +101,6 @@ def delete_project(
             status_code=403, detail="Not authorized to delete this project"
         )
 
-    # Proceed with deletion if authorized
     remove_project(db, project_id)
     return {"message": "Project deleted successfully"}
 
