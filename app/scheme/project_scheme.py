@@ -64,3 +64,8 @@ class PendingInvitationInfo(BaseModel):
 
     class Config:
         from_attributes=True
+
+class UpdateInvitation(BaseModel):
+    status:bool
+    class Config:
+        from_attributes=True
