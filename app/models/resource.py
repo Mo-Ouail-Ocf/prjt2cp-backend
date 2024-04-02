@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 

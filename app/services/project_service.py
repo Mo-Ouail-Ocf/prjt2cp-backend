@@ -10,25 +10,32 @@ def create_and_return_project(db: Session, project_data: dict) -> Project:
     # Business logic before creating a project can be added here
     return create_project(db, project_data)
 
+
 def update_existing_project(db: Session, project_id: int, update_data: dict) -> Project:
     # Business logic before updating a project can be added here
     return update_project(db, project_id, update_data)
+
 
 def remove_project(db: Session, project_id: int):
     # Additional business logic for deleting a project can be added here
     delete_project(db, project_id)
 
+
 def fetch_owned_projects(db: Session, user_id: int) -> List[Project]:
     return get_owned_projects(db, user_id)
+
 
 def fetch_participated_projects(db: Session, user_id: int) -> List[Project]:
     return get_participated_projects(db, user_id)
 
+
 def get_project(db: Session, project_id: int) -> Project:
-    return project_crud.get_project(db,project_id)
+    return project_crud.get_project(db, project_id)
+
 
 def read_pending_invitations(user_id: int, db: Session):
-    return  project_crud.get_pending_invitations(db, user_id)
+    return project_crud.get_pending_invitations(db, user_id)
+
 
 def invite_user(db: Session, project_id: int, user_id: int, role: str) -> dict:
     # Here you can add any business logic, such as checking if the user is already part of the project

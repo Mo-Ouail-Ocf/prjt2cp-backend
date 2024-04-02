@@ -39,7 +39,7 @@ async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
 async def httpx_error_hander(request: Request, exc: RequestError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_504_GATEWAY_TIMEOUT,
-        content={"detail": f"Couldn't retrieve data"},
+        content={"detail": "Couldn't retrieve data"},
     )
 
 

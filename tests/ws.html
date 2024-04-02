@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Session WebSocket Test</title>
+    </head>
+    <body>
+        <h1>WebSocket Session</h1>
+        <div>
+            <h2>Authenticate</h2>
+            <div>
+                <form action="" onsubmit="auth(event)">
+                    <input type="text" id="token" placeholder="Your access token" autocomplete="off"/>
+                    <button type="submit">Auth</button>
+                </form>
+                <form action="" onsubmit="connect(event)">
+                    <input type="number" id="session_id" placeholder="Your session id" autocomplete="off"/>
+                    <button>Connect</button>
+                </form>
+            </div>
+            <button onclick="disconnect()">Disconnect</button>
+        </div>
+        <div>
+            <h2>Session Chat:</h2>
+            <form action="" onsubmit="sendMessage(event)">
+                <input type="text" id="msg_input" placeholder="message" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='chats'></ul>
+        </div>
+        <div>
+            <h2>Ideas:</h2>
+            <form action="" onsubmit="sendIdea(event)">
+                <input type="text" id="idea_content" placeholder="content" autocomplete="off"/>
+                <input type="number" id="idea_parent" placeholder="[parent_id]" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='ideas'></ul>
+        </div>
+        <div>
+            <h2>Comments:</h2>
+            <form action="" onsubmit="sendComment(event)">
+                <input type="number" id="comment_idea_id" placeholder="idea_id" autocomplete="off"/>
+                <input type="text" id="comment_content" placeholder="content" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='comments'></ul>
+        </div>
+        <div>
+            <h2>Combined Ideas:</h2>
+            <form action="" onsubmit="sendCombinedIdea(event)">
+                <input type="number" id="combined_idea_id" placeholder="combined_idea_id" autocomplete="off"/>
+                <input type="number" id="source_idea_id" placeholder="source_idea_id" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='combined_ideas'></ul>
+        </div>
+
+        <script>
+            var ws = null;
+
+            function auth(event) {
+                var token = document.getElementById("token");
+                document.cookie = "access_token=" + token.value
+                token.value = '';
+                token.placeholder = "Access token set";
+                event.preventDefault();
+            }
+
+            function connect(event) {
+                var session_id =  document.getElementById("session_id");
+                var access_token = document.cookie.substr(13)
+                ws = new WebSocket("ws://localhost:8000/v1/ws/" + session_id.value + "?access_token=" + access_token);
+
+                ws.onmessage = function(event) {
+                    var data = JSON.parse(JSON.parse(event.data))
+                    var display_area = document.getElementById(data.type+"s");
+
+
+                    var message = document.createElement('li')
+                    var content = document.createTextNode(JSON.stringify(data.content))
+                    message.appendChild(content)
+                    display_area.appendChild(message)
+                };
+
+                event.preventDefault()
+            }
+
+            function disconnect(event) {
+                if ws != null {
+                    ws.close()
+                }
+
+                event.preventDefault()
+            }
+
+            function sendMessage(event) {
+                var msg_input = document.getElementById("msg_input")
+
+                var content = msg_input.value
+                var data = {
+                    type: "chat",
+                    content: {
+                        msg: String(msg_input.value),
+                    }
+                }
+                ws.send(JSON.stringify(data))
+                msg_input.value = ''
+                event.preventDefault()
+            }
+
+            function sendIdea(event) {
+                var idea_content = document.getElementById("idea_content")
+                var idea_parent = document.getElementById("idea_parent")
+
+                var data = {
+                    type: "idea",
+                    content: {
+                        content: idea_content.value,
+                        parent_idea_id: idea_parent.value ? Number(idea_parent.value) : null,
+                        details: null,
+                    }
+                }
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                idea_content.value = ''
+                idea_parent.value = ''
+                event.preventDefault()
+            }
+
+            function sendComment(event) {
+                var comment_content = document.getElementById("comment_content")
+                var comment_idea_id = document.getElementById("comment_idea_id")
+
+                var data = {
+                    type: "comment",
+                    content: {
+                        idea_id: Number(comment_idea_id.value),
+                        content: comment_content.value,
+                    }
+                }
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                comment_idea_id.value = ''
+                comment_content.value = ''
+                event.preventDefault()
+            }
+
+            function sendCombinedIdea(event) {
+                var source_idea_id = document.getElementById("source_idea_id")
+                var combined_idea_id = document.getElementById("combined_idea_id")
+
+                var data = {
+                    type: "combined_idea",
+                    content: {
+                        source_idea_id: Number(source_idea_id.value),
+                        combined_idea_id: Number(combined_idea_id.value),
+                    }
+                }
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                source_idea_id.value = ''
+                combined_idea_id.value = ''
+                event.preventDefault()
+            }
+        </script>
+    </body>
+<html/>

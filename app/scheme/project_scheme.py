@@ -1,6 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel , EmailStr
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional
+
 
 class UserBase(BaseModel):
     user_id: int
@@ -8,13 +9,15 @@ class UserBase(BaseModel):
     email: str
     image: Optional[str] = None
 
+
 class ProjectUserDisplay(BaseModel):
     user: UserBase
     role: str
     invitation_status: str
 
     class Config:
-        from_attributes=True
+        from_attributes = True
+
 
 class ResourceDisplay(BaseModel):
     resource_id: int
@@ -25,17 +28,21 @@ class ResourceDisplay(BaseModel):
     photo: Optional[str] = None  # Assuming this is how you store binary data
 
     class Config:
-        from_attributes=True
+        from_attributes = True
+
+
 class ProjectCreate(BaseModel):
     title: str
     description: Optional[str] = None
     status: str
     resource_id: int
 
+
 class ProjectUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+
 
 class ProjectDisplay(BaseModel):
     project_id: int
@@ -48,13 +55,16 @@ class ProjectDisplay(BaseModel):
     participants: List[ProjectUserDisplay] = []
 
     class Config:
-        from_attributes=True
+        from_attributes = True
+
 
 class ProjectInvitationCreate(BaseModel):
-    email:EmailStr
+    email: EmailStr
+
 
 class ProjectInvitationResponse(BaseModel):
     message: str
+
 
 class PendingInvitationInfo(BaseModel):
     project_title: str
