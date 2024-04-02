@@ -14,7 +14,11 @@ def get_user_by_id(db: Session, id: int) -> User:
 
 
 def create_user(db: Session, user: UserCreate) -> User:
-    user = User(name=user.name, esi_email=user.email, profile_picture=user.pfp)
+    # debug
+    profile_picture_url = str(user.pfp) if user.pfp else None
+    user = User(
+        name=user.name, esi_email=user.email, profile_picture=profile_picture_url
+    )
     db.add(user)
     db.commit()
     db.refresh(user)

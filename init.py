@@ -5,8 +5,6 @@ from typing import List
 from pydantic import BaseModel
 import json
 
-# TODO: init clubs pfp
-
 
 class Module(BaseModel):
     code: str
@@ -71,7 +69,10 @@ def init_club_list(db: Session) -> None:
             clubs = ClubList.model_validate(data).clubs
             for club in clubs:
                 resource = Resource(
-                    name=club.name, type="club", description=club.description
+                    name=club.name,
+                    type="club",
+                    description=club.description,
+                    photo=club.pfp_url,
                 )
                 db.add(resource)
     db.commit()

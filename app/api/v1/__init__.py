@@ -1,10 +1,13 @@
 from fastapi import APIRouter
 from app.api.v1.auth import router as auth_router
 from app.api.v1.user import router as user_router
+from app.api.v1.project import router as project_router
+from app.api.v1.ressource import router as ressource_router
 from app.api.v1.websocket import router as ws_router
 
 
 router = APIRouter()
+
 
 router.include_router(
     auth_router,
@@ -28,3 +31,23 @@ router.include_router(
 )
 
 router.include_router(ws_router, prefix="/ws")
+
+router.include_router(
+    project_router,
+    prefix="/project",
+    tags=["PROJECT"],
+    responses={
+        401: {"description": "Coudn't validate credentials"},
+        403: {"description": "Credentials expired"},
+    },
+)
+
+router.include_router(
+    ressource_router,
+    prefix="/ressource",
+    tags=["RESSOURCE"],
+    responses={
+        401: {"description": "Coudn't validate credentials"},
+        403: {"description": "Credentials expired"},
+    },
+)

@@ -17,6 +17,7 @@
                     <button>Connect</button>
                 </form>
             </div>
+            <button onclick="disconnect()">Disconnect</button>
         </div>
         <div>
             <h2>Session Chat:</h2>
@@ -80,6 +81,14 @@
                     message.appendChild(content)
                     display_area.appendChild(message)
                 };
+
+                event.preventDefault()
+            }
+
+            function disconnect(event) {
+                if ws != null {
+                    ws.close()
+                }
 
                 event.preventDefault()
             }
