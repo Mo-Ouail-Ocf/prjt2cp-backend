@@ -115,12 +115,17 @@ def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]
         # Construct participants list
         participants = [
             ProjectUserDisplay(
-                user=UserBase.from_orm(pu.user),
+                user=UserBase(
+                    user_id=pu.user.user_id,
+                    name=pu.user.name,
+                    email=pu.user.esi_email,  # Replace with actual email field name
+                    image=pu.user.profile_picture,  # Replace with actual image field name
+                ),
                 role=pu.role,
                 invitation_status=pu.invitation_status,
             )
             for pu in project.project_users
-            if pu.user_id != project.owner_id
+            if pu.user_id != user_id  # Exclude the owner from the participants list
         ]
 
         project_data = ProjectDisplay(
@@ -162,20 +167,31 @@ def invite_user_to_project(
 def get_pending_invitations(db: Session, user_id: int):
     result = (
         db.query(
-            ProjectUser,
+            Project.project_id,
             Project.title,
-            Project.details,
+            Project.description,
             User.name.label("creator_name"),
-            User.email.label("creator_email"),
+            User.esi_email.label("creator_email"),
         )
-        .join(Project, ProjectUser.project_id == Project.id)
-        .join(User, Project.owner_id == User.id)
+        .select_from(ProjectUser)
+        .join(Project, ProjectUser.project_id == Project.project_id)
+        .join(User, Project.owner_id == User.user_id)
         .filter(
-            ProjectUser.user_id == user_id, ProjectUser.invitation_status == "pending"
+            ProjectUser.user_id == user_id, 
+            ProjectUser.invitation_status == "pending"
         )
         .all()
     )
-    return result
+    return [
+        {
+            "project_id": project_id,
+            "project_title": project_title,
+            "project_description": project_description,
+            "creator_name": creator_name,
+            "creator_email": creator_email,
+        }
+        for project_id, project_title, project_description, creator_name, creator_email in result
+    ]
 
 
 def get_users(db: Session, project_id: int):

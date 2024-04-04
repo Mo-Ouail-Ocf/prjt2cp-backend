@@ -8,7 +8,8 @@ class UserBase(BaseModel):
     name: str
     email: str
     image: Optional[str] = None
-
+    class Config:
+        from_attributes = True
 
 class ProjectUserDisplay(BaseModel):
     user: UserBase
@@ -55,7 +56,7 @@ class ProjectDisplay(BaseModel):
     participants: List[ProjectUserDisplay] = []
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 class ProjectInvitationCreate(BaseModel):
@@ -67,6 +68,7 @@ class ProjectInvitationResponse(BaseModel):
 
 
 class PendingInvitationInfo(BaseModel):
+    project_id: int
     project_title: str
     project_description: str
     creator_name: str

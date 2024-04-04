@@ -25,7 +25,7 @@ async def send_invitation_email(
 async def send_invitation_response_email(
     creator_email: str, project_name: str, responder_name: str, response: str
 ):
-    response_msg = "accepted" if response == "accepted" else "refused"
+    response_msg = "accepted" if response else "refused"
     html = f"""
     <p>Hi,</p>
     <p>{responder_name} has {response_msg} the invitation to join the project {project_name}.</p>

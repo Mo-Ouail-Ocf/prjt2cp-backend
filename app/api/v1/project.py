@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.dependencies.database import get_db
+from app.models.user import User
 from app.scheme.project_scheme import (
     ProjectCreate,
     ProjectUpdate,
@@ -20,6 +21,7 @@ from app.services.project_service import (
     fetch_participated_projects,
     get_project,
     invite_user,
+    handle_invitation_response
 )
 from app.dependencies.user import get_current_user
 from app.services.user_service import get_user
@@ -104,18 +106,18 @@ def delete_project(
     remove_project(db, project_id)
     return {"message": "Project deleted successfully"}
 
-
 @router.get("/user/pending-invitations", response_model=List[PendingInvitationInfo])
 def read_pending_invitations(
     user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
 ):
-    invitations = project_service.get_pending_invitations(db, user_id)
+    invitations = project_service.read_pending_invitations(user_id, db)
     return [
         PendingInvitationInfo(
-            project_title=invitation.Project.title,
-            project_description=invitation.Project.description,
-            creator_name=invitation.User.creator_name,
-            creator_email=invitation.User.creator_email,
+            project_id=invitation['project_id'],
+            project_title=invitation['project_title'],
+            project_description=invitation['project_description'],
+            creator_name=invitation['creator_name'],
+            creator_email=invitation['creator_email'],
         )
         for invitation in invitations
     ]
@@ -141,7 +143,7 @@ async def invite(
         )
     users = get_users(db, project_id)
     if receiver in users:
-        return ProjectInvitationResponse("The user is already invited")
+        return ProjectInvitationResponse(message="The user is already invited")
     message = invite_user(db, project_id, receiver.user_id, role="contributor")
     await send_invitation_email(str(email.email), project.title, user.name)
     return ProjectInvitationResponse(message=message["message"])
@@ -162,9 +164,9 @@ async def handle_invitation(
     project = get_project(db, project_id)
     if project is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="project not found")
-    user = get_user(user_id, db)
+    user = db.query(User).filter(User.user_id == user_id).first()
     users = get_users(db, project_id)
-    if user not in users:
+    if not any(user.user_id == project_user.user_id for project_user in users):
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED, detail="user was not invited to the project"
         )
@@ -172,8 +174,9 @@ async def handle_invitation(
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail="the user is the creator of the project"
         )
-    creator = get_user(project.owner_id)
+    creator = db.query(User).filter(User.user_id == project.owner_id).first()
     await send_invitation_response_email(
-        creator.email, project.title, user.name, update_invitation.status
+        creator.esi_email, project.title, user.name, update_invitation.status
     )
-    return ProjectInvitationResponse("Handling invitation success")
+    handle_invitation_response(db,project_id,user_id,update_invitation.status)
+    return ProjectInvitationResponse(message="Handling invitation success")
