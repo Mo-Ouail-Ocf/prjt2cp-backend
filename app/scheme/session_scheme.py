@@ -1,21 +1,27 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Optional
 
 
-class SessionBase(BaseModel):
-    pass
+class SessionCreate(BaseModel):
+    title: str
+    description: Optional[str] = None
+    ideation_technique: str = Field(pattern="brain_writing|brain_storming")
+    objectives: Optional[str] = None
 
 
-class SessionCreate(SessionBase):
+class SessionUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    session_status: str = Field(pattern="open|colsed")
+    objectives: Optional[str] = None
+
+
+class SessionResponse(SessionCreate):
+    session_id: int
+    session_status: str
+    start_time: datetime
     project_id: int
-    title: str
-    description: str
-    ideation_technique: str
-    session_status: str
-    objectives: str
 
-
-class SessionUpdate(SessionBase):
-    title: str
-    description: str
-    session_status: str
-    objectives: str
+    class Config:
+        from_attributes = True

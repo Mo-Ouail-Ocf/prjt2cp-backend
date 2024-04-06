@@ -13,7 +13,7 @@ from app.crud.project_crud import (
 from app.models.project import Project
 from app.models.project_user import (
     ProjectUser,
-)  
+)
 
 
 def create_and_return_project(db: Session, project_data: dict) -> Project:

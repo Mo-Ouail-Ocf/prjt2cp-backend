@@ -177,8 +177,7 @@ def get_pending_invitations(db: Session, user_id: int):
         .join(Project, ProjectUser.project_id == Project.project_id)
         .join(User, Project.owner_id == User.user_id)
         .filter(
-            ProjectUser.user_id == user_id, 
-            ProjectUser.invitation_status == "pending"
+            ProjectUser.user_id == user_id, ProjectUser.invitation_status == "pending"
         )
         .all()
     )

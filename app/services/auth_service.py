@@ -54,10 +54,10 @@ async def login_with_credentials(db: Session, username: str, password: str) -> T
     if user is None:
         raise InvalidCredentialsError
 
-    if user.hash_passoword is None:
+    if user.hash_password is None:
         raise InvalidCredentialsError
 
-    if not verify_password(password, user.hash_passoword):
+    if not verify_password(password, user.hash_password):
         raise InvalidCredentialsError
 
     access_token = create_access_token(user.user_id)

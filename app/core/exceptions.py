@@ -23,6 +23,11 @@ UnknownError = HTTPException(
     detail="Unexpected error",
 )
 
+InvalidProjectError = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="Project doesn't exist",
+)
+
 
 async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
     if isinstance(exc, ExpiredSignatureError):

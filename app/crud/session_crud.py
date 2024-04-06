@@ -3,13 +3,15 @@ from app.models import ProjectUser, Session as IdeationSession
 from app.scheme.session_scheme import SessionCreate, SessionUpdate
 
 
-def create_session(db: Session, session_data: SessionCreate) -> IdeationSession:
+def create_session(
+    db: Session, project_id: int, session_data: SessionCreate
+) -> IdeationSession:
     session = IdeationSession(
-        project_id=session_data.project_id,
+        project_id=project_id,
         title=session_data.title,
         description=session_data.description,
         ideation_technique=session_data.ideation_technique,
-        session_status=session_data.session_status,
+        session_status="open",
         objectives=session_data.objectives,
     )
     db.add(session)
@@ -33,7 +35,8 @@ def update_session(
 
     if session:
         for key, value in update_data.model_dump().items():
-            setattr(session, key, value)
+            if value != None:
+                setattr(session, key, value)
 
     db.commit()
     db.refresh(session)
@@ -58,7 +61,7 @@ def is_moderator(db: Session, session_id: int, user_id: int) -> bool:
     if user is None:
         return False
 
-    return user.role == "moderator"
+    return user.role in ["moderator", "Admin"]
 
 
 def is_session_user(db: Session, session_id: int, user_id: int) -> bool:
@@ -79,4 +82,13 @@ def is_session_user(db: Session, session_id: int, user_id: int) -> bool:
     if user is None:
         return False
 
-    return user.invitation_status == "accepted"
+    return user.invitation_status in ["accepted", "done"]
+
+
+def get_open_sessions(db: Session, project_id: int) -> list[IdeationSession]:
+    return (
+        db.query(IdeationSession)
+        .filter(IdeationSession.project_id == project_id)
+        .filter(IdeationSession.session_status == "open")
+        .all()
+    )

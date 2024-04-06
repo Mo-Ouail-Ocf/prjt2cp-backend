@@ -16,6 +16,7 @@ class UserResponse(UserBase):
     name: str
     pfp: AnyHttpUrl
 
+
 class User(UserBase):
     id: int
     name: str

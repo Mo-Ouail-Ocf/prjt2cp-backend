@@ -21,7 +21,7 @@ from app.services.project_service import (
     fetch_participated_projects,
     get_project,
     invite_user,
-    handle_invitation_response
+    handle_invitation_response,
 )
 from app.dependencies.user import get_current_user
 from app.services.user_service import get_user
@@ -106,6 +106,7 @@ def delete_project(
     remove_project(db, project_id)
     return {"message": "Project deleted successfully"}
 
+
 @router.get("/user/pending-invitations", response_model=List[PendingInvitationInfo])
 def read_pending_invitations(
     user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
@@ -113,11 +114,11 @@ def read_pending_invitations(
     invitations = project_service.read_pending_invitations(user_id, db)
     return [
         PendingInvitationInfo(
-            project_id=invitation['project_id'],
-            project_title=invitation['project_title'],
-            project_description=invitation['project_description'],
-            creator_name=invitation['creator_name'],
-            creator_email=invitation['creator_email'],
+            project_id=invitation["project_id"],
+            project_title=invitation["project_title"],
+            project_description=invitation["project_description"],
+            creator_name=invitation["creator_name"],
+            creator_email=invitation["creator_email"],
         )
         for invitation in invitations
     ]
@@ -178,5 +179,5 @@ async def handle_invitation(
     await send_invitation_response_email(
         creator.esi_email, project.title, user.name, update_invitation.status
     )
-    handle_invitation_response(db,project_id,user_id,update_invitation.status)
+    handle_invitation_response(db, project_id, user_id, update_invitation.status)
     return ProjectInvitationResponse(message="Handling invitation success")

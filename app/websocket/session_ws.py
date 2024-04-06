@@ -7,7 +7,7 @@ from app.scheme.comment_scheme import CommentCreate
 from app.scheme.ws_scheme import ChatMessage
 from app.websocket.room_manager import room_manager
 from app.scheme.ws_scheme import Message
-from app.crud.session_crud import is_moderator, is_session_user
+from app.crud.session_crud import is_moderator
 from app.crud.idea_crud import create_idea
 from app.crud.combined_idea_crud import create_combined_idea
 from app.crud.comment_crud import create_comment
@@ -15,9 +15,6 @@ from app.crud.comment_crud import create_comment
 
 async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
     ideation_room = room_manager.get_room(session_id)
-
-    if not is_session_user(db, session_id, user_id):
-        return
 
     await ideation_room.connect_user(ws)
 

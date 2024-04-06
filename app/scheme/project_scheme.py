@@ -8,8 +8,10 @@ class UserBase(BaseModel):
     name: str
     email: str
     image: Optional[str] = None
+
     class Config:
         from_attributes = True
+
 
 class ProjectUserDisplay(BaseModel):
     user: UserBase
@@ -26,7 +28,7 @@ class ResourceDisplay(BaseModel):
     type: str
     level: Optional[str] = None
     description: Optional[str] = None
-    photo: Optional[str] = None 
+    photo: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -52,7 +54,7 @@ class ProjectDisplay(BaseModel):
     status: str
     creation_date: datetime
     owner_id: int
-    resource: Optional[ResourceDisplay] = None  
+    resource: Optional[ResourceDisplay] = None
     participants: List[ProjectUserDisplay] = []
 
     class Config:
