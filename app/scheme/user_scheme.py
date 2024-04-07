@@ -9,6 +9,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     name: str
     pfp: AnyHttpUrl
+    google_refresh_token: str
 
 
 class UserResponse(UserBase):
@@ -17,11 +18,10 @@ class UserResponse(UserBase):
     pfp: AnyHttpUrl
 
 
-class User(UserBase):
+class User(UserCreate):
     id: int
-    name: str
-    pfp: AnyHttpUrl
     last_activity: datetime
+    hash_password: str
 
     class Config:
         from_attributes = True

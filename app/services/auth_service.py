@@ -11,22 +11,27 @@ from app.core.security import (
     verify_password,
 )
 from sqlalchemy.orm import Session
-from app.scheme.auth_scheme import GoogleUserInfo
+from app.scheme.google_scheme import GoogleToken, GoogleUserInfo
 from app.crud import user_crud
 from app.scheme.user_scheme import UserCreate
 
 
 async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
-    google_token: str = await get_google_token(code, redirect_uri)
-    user_info: GoogleUserInfo = await get_google_user_info(google_token)
+    google_token: GoogleToken = await get_google_token(code, redirect_uri)
+    user_info: GoogleUserInfo = await get_google_user_info(google_token.access_token)
 
     db_user = user_crud.get_user_by_email(db, user_info.email)
 
     if db_user is None:
         user = UserCreate(
-            name=user_info.name, email=user_info.email, pfp=user_info.picture
+            name=user_info.name,
+            email=user_info.email,
+            pfp=user_info.picture,
+            google_refresh_token=google_token.refresh_token,
         )
         db_user = user_crud.create_user(db, user)
+    else:
+        user_crud.update_google_refresh_token(db, db_user, google_token.refresh_token)
 
     access_token = create_access_token(db_user.user_id)
     refresh_token = create_refresh_token(db_user.user_id)

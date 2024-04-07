@@ -13,6 +13,7 @@ class User(Base):
     profile_picture = Column(String)
     last_activity = Column(TIMESTAMP(timezone=True), default=datetime.datetime.utcnow)
     hash_password = Column(String, nullable=True, default=None)
+    google_refresh_token = Column(String)
 
     project_users = relationship("ProjectUser", back_populates="user")
     owned_projects = relationship("Project", back_populates="owner")

@@ -14,7 +14,7 @@ app = FastAPI(
     swagger_ui_init_oauth={
         "clientId": GOOGLE_CLIENT_ID,
         "appName": "Backned",
-        "scopes": "openid profile email",
+        "scopes": "openid profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file",
     },
 )
 

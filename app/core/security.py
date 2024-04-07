@@ -13,13 +13,15 @@ from passlib.context import CryptContext
 
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl="https://accounts.google.com/o/oauth2/auth",
+    authorizationUrl="https://accounts.google.com/o/oauth2/auth?access_type=offline",
     tokenUrl="/v1/auth/token",
     refreshUrl="/v1/auth/refresh",
     scopes={
         "openid": "OpenID Connect",
         "profile": "User profile",
         "email": "Email address",
+        "https://www.googleapis.com/auth/drive": "Google drive access",
+        "https://www.googleapis.com/auth/drive.file": "Google drive file access",
     },
 )
 

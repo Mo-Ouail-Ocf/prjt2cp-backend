@@ -19,18 +19,6 @@ class AuthRequestFrom:
         self.redirect_uri = redirect_uri
 
 
-class GoogleUserInfo(BaseModel):
-    sub: int
-    name: str
-    given_name: str
-    family_name: str
-    picture: str
-    email: str
-    email_verified: bool
-    locale: str
-    hd: str
-
-
 class Token(BaseModel):
     access_token: str
     refresh_token: str
