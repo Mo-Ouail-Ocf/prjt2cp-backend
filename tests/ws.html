@@ -54,6 +54,14 @@
             </form>
             <ul id='combined_ideas'></ul>
         </div>
+        <div>
+            <h2>Votes:</h2>
+            <form action="" onsubmit="sendVote(event)">
+                <input type="number" id="idea_id" placeholder="idea_id" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='votes'></ul>
+        </div>
 
         <script>
             var ws = null;
@@ -160,6 +168,21 @@
                 ws.send(JSON.stringify(data))
                 source_idea_id.value = ''
                 combined_idea_id.value = ''
+                event.preventDefault()
+            }
+
+            function sendVote(event) {
+                var idea_id = document.getElementById("idea_id")
+
+                var data = {
+                    type: "vote",
+                    content: {
+                        idea_id: Number(idea_id.value),
+                    }
+                }
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                idea_id.value = ''
                 event.preventDefault()
             }
         </script>

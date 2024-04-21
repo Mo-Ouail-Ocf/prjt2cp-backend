@@ -20,8 +20,8 @@ class IdeaCreate(IdeaRequest):
 
 class IdeaResponse(IdeaCreate):
     idea_id: int
-    creation_data: datetime
-    # votes: int
+    creation_date: datetime
+    votes: Optional[int]
 
     class Config:
         from_attributes = True

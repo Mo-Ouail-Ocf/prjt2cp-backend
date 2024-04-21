@@ -15,3 +15,13 @@ def create_idea(db: Session, idea_data: IdeaCreate) -> Idea:
     db.commit()
     db.refresh(idea)
     return idea
+
+
+def add_idea_vote(db: Session, idea_id: int):
+    idea = db.query(Idea).filter(Idea.idea_id == idea_id).first()
+    if idea:
+        if idea.votes is None:
+            idea.votes = 0
+
+        idea.votes += 1
+        db.commit()

@@ -9,10 +9,15 @@ class ChatMessage(BaseModel):
     msg: str
 
 
+class Vote(BaseModel):
+    # votes is anonymous, so no user id
+    idea_id: int
+
+
 class Message(BaseModel):
     # TODO: validator
-    type: str = Field(pattern="chat|idea|combined_idea|comment")
-    content: Union[ChatMessage, IdeaRequest, CombinedIdeaCreate, CommentRequest]
+    type: str = Field(pattern="chat|idea|combined_idea|comment|vote")
+    content: Union[ChatMessage, IdeaRequest, CombinedIdeaCreate, CommentRequest, Vote]
 
 
 class ChatBroadCast(ChatMessage):
@@ -20,5 +25,7 @@ class ChatBroadCast(ChatMessage):
 
 
 class BroadCast(BaseModel):
-    type: str = Field(pattern="chat|idea|combined_idea|comment")
-    content: Union[ChatBroadCast, IdeaResponse, CombinedIdeaResponse, CommentResponse]
+    type: str = Field(pattern="chat|idea|combined_idea|comment|vote")
+    content: Union[
+        ChatBroadCast, IdeaResponse, CombinedIdeaResponse, CommentResponse, Vote
+    ]
