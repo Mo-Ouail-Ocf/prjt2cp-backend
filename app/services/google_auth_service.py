@@ -35,8 +35,6 @@ async def get_google_token(code, redirect_uri) -> GoogleToken:
 
         if response.status_code == 200:
             token_data = response.json()
-            with open("hehe.txt", "w") as f:
-                f.write(str(token_data))
 
             return GoogleToken.model_validate(token_data)
 
