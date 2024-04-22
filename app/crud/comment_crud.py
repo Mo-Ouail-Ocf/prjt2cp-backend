@@ -13,3 +13,7 @@ def create_comment(db: Session, comment_data: CommentCreate) -> Comment:
     db.commit()
     db.refresh(comment)
     return comment
+
+
+def get_commnets_by_ideas(db: Session, idea_id: int) -> list[Comment]:
+    return db.query(Comment).filter(Comment.idea_id == idea_id).all()

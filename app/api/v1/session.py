@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from app.dependencies import (
     get_db,
     valid_project_moderator,
@@ -9,6 +9,7 @@ from app.dependencies import (
 from app.scheme.session_scheme import SessionCreate, SessionResponse, SessionUpdate
 from sqlalchemy.orm import Session
 from app.crud.session_crud import create_session, update_session, get_open_sessions
+from app.services.session_service import export_session
 
 
 router = APIRouter()
@@ -41,3 +42,19 @@ async def get_open(
     db: Session = Depends(get_db),
 ):
     return get_open_sessions(db, project_id)
+
+
+@router.get("/download/{session_id}")
+async def download_session(
+    _: Annotated[int, Depends(valid_session_moderator)],
+    session_id: int,
+    db: Session = Depends(get_db),
+):
+    session = export_session(session_id, db)
+    return Response(
+        str.encode(session.model_dump_json()),
+        media_type="application/txt",
+        headers={
+            "Content-Disposition": f'attachment; filename="session_{session_id}.json"'
+        },
+    )

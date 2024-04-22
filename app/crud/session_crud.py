@@ -92,3 +92,26 @@ def get_open_sessions(db: Session, project_id: int) -> list[IdeationSession]:
         .filter(IdeationSession.session_status == "open")
         .all()
     )
+
+
+def close_session(db: Session, session_id: int):
+    session = get_session(db, session_id)
+
+    if session:
+        session.session_status = "closed"
+
+    db.commit()
+    db.refresh(session)
+    return session
+
+
+def is_session_open(db: Session, session_id: int) -> bool:
+    session = (
+        db.query(IdeationSession)
+        .filter(IdeationSession.session_id == session_id)
+        .first()
+    )
+    if session is None:
+        return False
+
+    return session.session_status == "open"

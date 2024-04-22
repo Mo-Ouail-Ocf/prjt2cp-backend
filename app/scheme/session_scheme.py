@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
+from app.scheme.combined_idea_scheme import CombinedIdeaResponse
+from app.scheme.comment_scheme import CommentResponse
+from app.scheme.idea_scheme import IdeaResponse
 
 
 class SessionCreate(BaseModel):
@@ -25,3 +28,10 @@ class SessionResponse(SessionCreate):
 
     class Config:
         from_attributes = True
+
+
+class SessionExport(BaseModel):
+    metadata: SessionResponse
+    ideas: list[IdeaResponse]
+    comments: list[CommentResponse]
+    combined_ideas: list[CombinedIdeaResponse]

@@ -25,3 +25,7 @@ def add_idea_vote(db: Session, idea_id: int):
 
         idea.votes += 1
         db.commit()
+
+
+def get_ideas(db: Session, session_id: int) -> list[Idea]:
+    return db.query(Idea).filter(Idea.session_id == session_id).all()

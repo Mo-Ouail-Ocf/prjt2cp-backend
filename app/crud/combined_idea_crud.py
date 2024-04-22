@@ -12,3 +12,11 @@ def create_combined_idea(db: Session, comment_data: CombinedIdeaCreate) -> Combi
     db.commit()
     db.refresh(combined_idea)
     return combined_idea
+
+
+def get_combined_idea(db: Session, combined_idea_id: int) -> list[CombinedIdea]:
+    return (
+        db.query(CombinedIdea)
+        .filter(CombinedIdea.combined_idea_id == combined_idea_id)
+        .all()
+    )

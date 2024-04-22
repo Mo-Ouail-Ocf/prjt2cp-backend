@@ -80,6 +80,6 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
         ideation_room.disconnect(ws)
 
         if len(ideation_room.active_users) == 0:
-            room_manager.delete_room(ideation_room.session_id)
+            room_manager.delete_room(db, ideation_room.session_id)
         else:
             await ideation_room.broadcast_msg(0, msg)
