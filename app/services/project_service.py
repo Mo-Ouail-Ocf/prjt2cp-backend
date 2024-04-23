@@ -45,7 +45,7 @@ def read_pending_invitations(user_id: int, db: Session):
 
 
 def invite_user(db: Session, project_id: int, user_id: int, role: str) -> dict:
-    project_user = invite_user_to_project(
+    _project_user = invite_user_to_project(
         db, project_id, user_id, role, invitation_status="pending"
     )
     return {"message": f"User {user_id} invited to project {project_id} as {role}"}

@@ -41,8 +41,7 @@ async def get_google_token(code, redirect_uri) -> GoogleToken:
         raise InvalidGoogleCridentialsError
 
 
-async def refresh_google_access_token(google_refresh_token: str) -> str:
-    # TODO: test this
+async def refresh_google_access_token(google_refresh_token: str) -> GoogleToken:
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     data = {
         "refresh_token": google_refresh_token,
@@ -57,8 +56,6 @@ async def refresh_google_access_token(google_refresh_token: str) -> str:
         )
 
         if response.status_code == 200:
-            token_data = response.json()
-
-            return token_data.get("access_token")
+            return GoogleToken(**response.json(), refresh_token=google_refresh_token)
 
         raise InvalidGoogleCridentialsError

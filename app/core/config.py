@@ -1,9 +1,12 @@
 from dotenv import load_dotenv
 from os import getenv
 from fastapi_mail import ConnectionConfig
+from aiogoogle.auth.creds import ClientCreds
+
 
 load_dotenv()
 
+scopes = "email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file"
 
 GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = getenv("GOOGLE_CLIENT_SECRET", "")
@@ -38,4 +41,10 @@ mail_config = ConnectionConfig(
     MAIL_SSL_TLS=getenv("MAIL_SSL_TLS", "False") == "True",
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True,
+)
+
+drive_client_creds = ClientCreds(
+    client_id=GOOGLE_CLIENT_ID,
+    client_secret=GOOGLE_CLIENT_SECRET,
+    scopes=scopes.split(),
 )

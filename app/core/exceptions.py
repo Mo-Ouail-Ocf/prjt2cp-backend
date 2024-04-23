@@ -8,6 +8,10 @@ InvalidGoogleCridentialsError = HTTPException(
     status.HTTP_417_EXPECTATION_FAILED, detail="Couldn't validate google user"
 )
 
+DriveUploadError = HTTPException(
+    status.HTTP_424_FAILED_DEPENDENCY, detail="Counldn't upload file to drive"
+)
+
 InvalidCredentialsError = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",

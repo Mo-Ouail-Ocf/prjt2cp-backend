@@ -1,8 +1,10 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Form
 from app.dependencies import get_current_user, get_db
+from app.models.user import User
 from app.scheme.user_scheme import UserResponse
 from sqlalchemy.orm import Session
+from app.services.google_auth_service import refresh_google_access_token
 from app.services.user_service import rename_user, get_user, set_password
 
 
@@ -33,3 +35,12 @@ async def change_password(
     new_password: str = Form(),
 ):
     return set_password(user_id, old_password, new_password, db)
+
+
+@router.get("/refresh_google")
+async def refresh_google(
+    user_id: Annotated[int, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.user_id == user_id).first()
+    return await refresh_google_access_token(user.google_refresh_token)
