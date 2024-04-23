@@ -39,3 +39,4 @@ mail_config = ConnectionConfig(
     USE_CREDENTIALS=True,
     VALIDATE_CERTS=True,
 )
+OPENAI_TOKEN = getenv("OPENAI_TOKEN","")

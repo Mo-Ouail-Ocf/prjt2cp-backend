@@ -9,3 +9,4 @@ python-multipart==0.0.9
 psycopg2-binary==2.9.9
 passlib[bcrypt]==1.7.4
 fastapi-mail==1.4.1
+openai==1.23.2
