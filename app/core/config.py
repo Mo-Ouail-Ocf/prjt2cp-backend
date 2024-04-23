@@ -43,8 +43,12 @@ mail_config = ConnectionConfig(
     VALIDATE_CERTS=True,
 )
 
+
 drive_client_creds = ClientCreds(
     client_id=GOOGLE_CLIENT_ID,
     client_secret=GOOGLE_CLIENT_SECRET,
     scopes=scopes.split(),
 )
+
+
+OPENAI_TOKEN = getenv("OPENAI_TOKEN","")

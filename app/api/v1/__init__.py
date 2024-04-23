@@ -5,10 +5,9 @@ from app.api.v1.project import router as project_router
 from app.api.v1.ressource import router as ressource_router
 from app.api.v1.websocket import router as ws_router
 from app.api.v1.session import router as session_router
-
+from app.api.v1.chatbot import router as bot_router
 
 router = APIRouter()
-
 
 router.include_router(
     auth_router,
@@ -60,5 +59,13 @@ router.include_router(
     responses={
         401: {"description": "Coudn't validate credentials"},
         403: {"description": "Credentials expired"},
+    },
+)
+router.include_router(
+    bot_router,
+    prefix="/bot",
+    tags=["BOT"],
+    responses={
+        401: {"description": "Coudn't validate credentials"},
     },
 )
