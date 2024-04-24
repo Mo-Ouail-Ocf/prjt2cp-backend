@@ -40,3 +40,21 @@ async def send_invitation_response_email(
 
     fm = FastMail(mail_config)
     await fm.send_message(message)
+
+
+async def send_session_email(recipient_email: str, project_title: str):
+    html = """
+    <p>Hi,</p>
+    <p>There is a new open session waiting for you.</p>
+    <p>Please log in to your account to accept the invitation.</p>
+    """
+
+    message = MessageSchema(
+        subject=f"[{project_title}] New ideation session",
+        recipients=[recipient_email],  # FastAPI-Mail expects a list of recipients
+        body=html,
+        subtype="html",
+    )
+
+    fm = FastMail(mail_config)
+    await fm.send_message(message)

@@ -15,6 +15,8 @@ class Session(Base):
     start_time = Column(TIMESTAMP(timezone=True), default=datetime.datetime.utcnow)
     session_status = Column(String)
     objectives = Column(Text, nullable=True)
+    round_time = Column(Integer)
+    nb_rounds = Column(Integer)
 
     project = relationship("Project", back_populates="sessions")
     ideas = relationship("Idea", back_populates="session")

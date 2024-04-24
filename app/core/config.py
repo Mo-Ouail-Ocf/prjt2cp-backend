@@ -51,4 +51,4 @@ drive_client_creds = ClientCreds(
 )
 
 
-OPENAI_TOKEN = getenv("OPENAI_TOKEN","")
+OPENAI_TOKEN = getenv("OPENAI_TOKEN", "")

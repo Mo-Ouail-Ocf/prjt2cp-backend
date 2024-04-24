@@ -1,10 +1,10 @@
 from fastapi import WebSocket
 from sqlalchemy.orm import Session
-from app.scheme.ws_scheme import BroadCast, ChatBroadCast, Vote
+from app.scheme.ws_scheme import BroadCast, ChatBroadCast, SysEvent, Vote
 from app.scheme.combined_idea_scheme import CombinedIdeaCreate
-from app.scheme.idea_scheme import IdeaCreate
+from app.scheme.idea_scheme import IdeaCreate, IdeaUpdateWS
 from app.scheme.comment_scheme import CommentCreate
-from app.crud.idea_crud import create_idea, add_idea_vote
+from app.crud.idea_crud import create_idea, add_idea_vote, update_idea
 from app.crud.combined_idea_crud import create_combined_idea
 from app.crud.comment_crud import create_comment
 from app.scheme.ws_scheme import Message
@@ -26,6 +26,10 @@ class IdeationRoom:
 
     def disconnect(self, ws: WebSocket):
         self.active_users.remove(ws)
+
+    async def broadcast_sys_event(self, event: SysEvent):
+        data = BroadCast(type="sys_event", content=event)
+        await self.broadcast(data)
 
     async def broadcast_vote(self, idea_id: int, db: Session) -> bool:
         if idea_id not in self.ideas:
@@ -49,6 +53,20 @@ class IdeationRoom:
         self.ideas.append(idea.idea_id)
         await self.broadcast(data)
 
+        return True
+
+    async def broadcast_idea_update(self, idea: IdeaUpdateWS, db: Session) -> bool:
+        if not idea.idea_id in self.ideas:
+            return False
+
+        try:
+            idea = update_idea(db, idea.idea_id, idea)
+        except:
+            return False
+
+        data = BroadCast(type="idea", content=idea)
+
+        await self.broadcast(data)
         return True
 
     async def broadcast_combined_idea(
@@ -90,7 +108,7 @@ class IdeationRoom:
 
         await self.broadcast(data)
 
-
-async def send_msg(ws: WebSocket, msg: str):
-    data = Message(type="chat", content=ChatBroadCast(msg=msg, user_id=0))
-    await ws.send_json(data.model_dump_json())
+    @staticmethod
+    async def send_msg(ws: WebSocket, msg: str):
+        data = Message(type="chat", content=ChatBroadCast(msg=msg, user_id=0))
+        await ws.send_json(data.model_dump_json())

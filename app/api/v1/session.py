@@ -8,8 +8,9 @@ from app.dependencies import (
 )
 from app.scheme.session_scheme import SessionCreate, SessionResponse, SessionUpdate
 from sqlalchemy.orm import Session
-from app.crud.session_crud import create_session, update_session, get_open_sessions
+from app.crud.session_crud import update_session, get_open_sessions
 from app.services.session_service import (
+    new_session,
     export_session_drive,
     export_session_file,
     export_session,
@@ -26,7 +27,7 @@ async def create_a_session(
     create_data: Annotated[SessionCreate, Depends()],
     db: Session = Depends(get_db),
 ):
-    return create_session(db, project_id, create_data)
+    return await new_session(project_id, create_data, db)
 
 
 @router.put("/{session_id}", response_model=SessionResponse)

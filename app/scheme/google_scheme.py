@@ -1,4 +1,5 @@
-from pydantic import BaseModel,Field
+from typing import Optional
+from pydantic import BaseModel
 
 
 class GoogleUserInfo(BaseModel):
@@ -16,7 +17,7 @@ class GoogleUserInfo(BaseModel):
 class GoogleToken(BaseModel):
     access_token: str
     expires_in: int
-    refresh_token: str= Field(None, alias='refresh_token')#any issue
+    refresh_token: Optional[str] = None
     scope: str
     token_type: str
     id_token: str

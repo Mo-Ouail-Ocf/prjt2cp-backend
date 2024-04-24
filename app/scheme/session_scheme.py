@@ -11,18 +11,19 @@ class SessionCreate(BaseModel):
     description: Optional[str] = None
     ideation_technique: str = Field(pattern="brain_writing|brain_storming")
     objectives: Optional[str] = None
+    round_time: int
+    nb_rounds: int = 1
 
 
 class SessionUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-    session_status: str = Field(pattern="open|colsed")
     objectives: Optional[str] = None
 
 
 class SessionResponse(SessionCreate):
     session_id: int
-    session_status: str
+    session_status: str = Field(pattern="open|started|colsed")
     start_time: datetime
     project_id: int
 

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models import ProjectUser, Session as IdeationSession
 from app.scheme.session_scheme import SessionCreate, SessionUpdate
+from datetime import datetime
 
 
 def create_session(
@@ -94,11 +95,23 @@ def get_open_sessions(db: Session, project_id: int) -> list[IdeationSession]:
     )
 
 
-def close_session(db: Session, session_id: int):
+def close_started_session(db: Session, session_id: int):
+    session = get_session(db, session_id)
+
+    if session and session.session_status == "started":
+        session.session_status = "closed"
+
+    db.commit()
+    db.refresh(session)
+    return session
+
+
+def start_session(db: Session, session_id: int):
     session = get_session(db, session_id)
 
     if session:
-        session.session_status = "closed"
+        session.session_status = "started"
+        session.start_time = datetime.utcnow()
 
     db.commit()
     db.refresh(session)

@@ -20,6 +20,11 @@
             <button onclick="disconnect()">Disconnect</button>
         </div>
         <div>
+            <h2>Events: </h2>
+            <button onclick="start_session()">start</button>
+            <ul id='sys_events'></ul>
+        </div>
+        <div>
             <h2>Session Chat:</h2>
             <form action="" onsubmit="sendMessage(event)">
                 <input type="text" id="msg_input" placeholder="message" autocomplete="off"/>
@@ -35,6 +40,13 @@
                 <button>Send</button>
             </form>
             <ul id='ideas'></ul>
+            <h2>Idea Updates</h2>
+            <form action="" onsubmit="sendIdeaUpdate(event)">
+                <input type="text" id="idea_update_content" placeholder="content" autocomplete="off"/>
+                <input type="number" id="idea_update_id" placeholder="idea_id" autocomplete="off"/>
+                <input type="checkbox" id="idea_update_deleted"/>
+                <button>Send</button>
+            </form>
         </div>
         <div>
             <h2>Comments:</h2>
@@ -101,6 +113,16 @@
                 event.preventDefault()
             }
 
+            function start_session(event) {
+                var data = {
+                    type: "start",
+                    content: null
+                }
+
+                ws.send(JSON.stringify(data))
+                event.preventDefault()
+            }
+
             function sendMessage(event) {
                 var msg_input = document.getElementById("msg_input")
 
@@ -128,10 +150,31 @@
                         details: null,
                     }
                 }
-                console.log(JSON.stringify(data))
                 ws.send(JSON.stringify(data))
                 idea_content.value = ''
                 idea_parent.value = ''
+                event.preventDefault()
+            }
+
+            function sendIdeaUpdate(event) {
+                var idea_update_content = document.getElementById("idea_update_content")
+                var idea_update_id = document.getElementById("idea_update_id")
+                var idea_update_deleted = document.getElementById("idea_update_deleted")
+
+                var data = {
+                    type: "idea_update",
+                    content: {
+                        content: idea_update_content.value,
+                        idea_id: idea_update_id.value,
+                        deleted: idea_update_deleted.checked,
+                        details: null
+                    }
+                }
+
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                idea_update_content.value = ''
+                idea_update_id.value = ''
                 event.preventDefault()
             }
 

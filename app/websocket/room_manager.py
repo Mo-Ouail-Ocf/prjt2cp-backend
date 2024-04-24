@@ -1,7 +1,7 @@
 from typing import Dict
 from sqlalchemy.orm import Session
 from app.websocket.ideation_room import IdeationRoom
-from app.crud.session_crud import close_session
+from app.crud.session_crud import close_started_session
 
 
 class RoomManager:
@@ -20,7 +20,7 @@ class RoomManager:
     def delete_room(self, db: Session, session_id: int):
         if session_id in self.rooms.keys():
             self.rooms.pop(session_id)
-            close_session(db, session_id)
+            close_started_session(db, session_id)
 
 
 # Global RoomManager instance

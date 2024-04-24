@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import Column, Integer, ForeignKey, Text
+from sqlalchemy import Boolean, Column, Integer, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import relationship, backref
 from app.core.database import Base
@@ -17,6 +17,7 @@ class Idea(Base):
     parent_idea_id = Column(
         Integer, ForeignKey("ideas.idea_id"), nullable=True
     )  # For tracking idea expansions
+    deleted = Column(Boolean, default=False)
 
     session = relationship("Session", back_populates="ideas")
     submitter = relationship("User", back_populates="ideas")
