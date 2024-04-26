@@ -22,6 +22,7 @@
         <div>
             <h2>Events: </h2>
             <button onclick="start_session()">start</button>
+            <button onclick="close_session()">close</button>
             <ul id='sys_events'></ul>
         </div>
         <div>
@@ -74,6 +75,15 @@
             </form>
             <ul id='votes'></ul>
         </div>
+        <div>
+            <h2>Final decisions</h2>
+            <form action="" onsubmit="sendFinalDecision(event)">
+                <input type="number" id="final_decision_idea_id" placeholder="idea_id" autocomplete="off"/>
+                <input type="text" id="final_decision_rationale" placeholder="rationale" autocomplete="off"/>
+                <button>Send</button>
+            </form>
+            <ul id='final_decisions'></ul>
+        </div>
 
         <script>
             var ws = null;
@@ -113,14 +123,24 @@
                 event.preventDefault()
             }
 
-            function start_session(event) {
+            function start_session() {
                 var data = {
-                    type: "start",
-                    content: null
+                    type: "sys_event",
+                    content: {
+                        event: "start"
+                    }
                 }
-
                 ws.send(JSON.stringify(data))
-                event.preventDefault()
+            }
+
+            function close_session() {
+                var data = {
+                    type: "sys_event",
+                    content: {
+                        event: "close"
+                    }
+                }
+                ws.send(JSON.stringify(data))
             }
 
             function sendMessage(event) {
@@ -165,7 +185,7 @@
                     type: "idea_update",
                     content: {
                         content: idea_update_content.value,
-                        idea_id: idea_update_id.value,
+                        idea_id: Number(idea_update_id.value),
                         deleted: idea_update_deleted.checked,
                         details: null
                     }
@@ -226,6 +246,23 @@
                 console.log(JSON.stringify(data))
                 ws.send(JSON.stringify(data))
                 idea_id.value = ''
+                event.preventDefault()
+            }
+            function sendFinalDecision(event) {
+                var final_decision_idea_id = document.getElementById("final_decision_idea_id")
+                var final_decision_rationale = document.getElementById("final_decision_rationale")
+
+                var data = {
+                    type: "final_decision",
+                    content: {
+                        rationale: final_decision_rationale.value,
+                        idea_id: Number(final_decision_idea_id.value),
+                    }
+                }
+                console.log(JSON.stringify(data))
+                ws.send(JSON.stringify(data))
+                final_decision_idea_id.value = ''
+                final_decision_rationale.value = ''
                 event.preventDefault()
             }
         </script>

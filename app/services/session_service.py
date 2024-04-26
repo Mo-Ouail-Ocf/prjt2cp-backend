@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from app.core.exceptions import UnknownError
+from app.core.exceptions import SessionNotClosed, UnknownError
 from app.crud.combined_idea_crud import get_combined_idea
 from app.crud.comment_crud import get_commnets_by_ideas
+from app.crud.final_decision_crud import get_final_decisions
 from app.crud.idea_crud import get_ideas
 from app.crud.project_crud import get_project, get_users
 from app.crud.session_crud import get_session, create_session
@@ -22,7 +23,7 @@ async def new_session(
     session = create_session(db, project_id, create_data)
     project = get_project(db, project_id)
 
-    if session:
+    if not session:
         raise UnknownError
 
     for user in get_users(db, project_id):
@@ -33,7 +34,12 @@ async def new_session(
 
 def export_session(session_id: int, db: Session):
     metadata = get_session(db, session_id)
+
+    if metadata.session_status != "closed":
+        raise SessionNotClosed
+
     ideas = get_ideas(db, session_id)
+    final_decisions = get_final_decisions(db, session_id)
     comments = []
     combined_ideas = []
     for idea in ideas:
@@ -41,16 +47,25 @@ def export_session(session_id: int, db: Session):
         combined_ideas += get_combined_idea(db, idea.idea_id)
 
     return SessionExport(
-        metadata=metadata, ideas=ideas, comments=comments, combined_ideas=combined_ideas
+        metadata=metadata,
+        ideas=ideas,
+        comments=comments,
+        combined_ideas=combined_ideas,
+        final_decisions=final_decisions,
     )
 
 
-async def export_session_drive(user_id: int, session_id: int, db: Session):
+async def export_session_drive(
+    user_id: int, session_id: int, file_name: str, db: Session
+):
     user = get_user_by_id(db, user_id)
     user_creds = await retreive_drive_creds(user.google_refresh_token)
 
     session = export_session(session_id, db)
-    file_name = f"session_{session_id}.json"
+
+    if file_name is None:
+        file_name = f"session_{session_id}.json"
+
     with tempfile.NamedTemporaryFile() as fp:
         fp.write(str.encode(session.model_dump_json()))
         fp.flush()

@@ -8,12 +8,7 @@ def create_session(
     db: Session, project_id: int, session_data: SessionCreate
 ) -> IdeationSession:
     session = IdeationSession(
-        project_id=project_id,
-        title=session_data.title,
-        description=session_data.description,
-        ideation_technique=session_data.ideation_technique,
-        session_status="open",
-        objectives=session_data.objectives,
+        project_id=project_id, session_status="open", **session_data.model_dump()
     )
     db.add(session)
     db.commit()
@@ -91,6 +86,15 @@ def get_open_sessions(db: Session, project_id: int) -> list[IdeationSession]:
         db.query(IdeationSession)
         .filter(IdeationSession.project_id == project_id)
         .filter(IdeationSession.session_status == "open")
+        .all()
+    )
+
+
+def get_closed_sessions(db: Session, project_id: int) -> list[IdeationSession]:
+    return (
+        db.query(IdeationSession)
+        .filter(IdeationSession.project_id == project_id)
+        .filter(IdeationSession.session_status == "closed")
         .all()
     )
 

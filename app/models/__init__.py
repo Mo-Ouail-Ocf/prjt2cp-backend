@@ -7,3 +7,4 @@ from app.models.session import Session
 from app.models.resource import Resource
 from app.models.project_user import ProjectUser
 from app.models.combined_idea import CombinedIdea
+from app.models.final_decision import FinalDecision

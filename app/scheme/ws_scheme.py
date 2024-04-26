@@ -1,8 +1,16 @@
 from typing import Union, Optional
 from pydantic import BaseModel, Field
 from app.scheme.comment_scheme import CommentResponse, CommentRequest
+from app.scheme.final_decision_scheme import (
+    FinalDecisionRequest,
+    FinalDecisionResponse,
+)
 from app.scheme.idea_scheme import IdeaRequest, IdeaResponse, IdeaUpdateWS
 from app.scheme.combined_idea_scheme import CombinedIdeaCreate, CombinedIdeaResponse
+
+
+class SysEvent(BaseModel):
+    event: str = Field(pattern="start|close")
 
 
 class ChatMessage(BaseModel):
@@ -15,7 +23,9 @@ class Vote(BaseModel):
 
 
 class Message(BaseModel):
-    type: str = Field(pattern="chat|idea|idea_update|combined_idea|comment|vote|start")
+    type: str = Field(
+        pattern="chat|idea|idea_update|combined_idea|comment|vote|sys_event|final_decision"
+    )
     content: Optional[
         Union[
             ChatMessage,
@@ -23,6 +33,9 @@ class Message(BaseModel):
             IdeaUpdateWS,
             CombinedIdeaCreate,
             CommentRequest,
+            SysEvent,
+            # order is importent
+            FinalDecisionRequest,
             Vote,
         ]
     ]
@@ -32,18 +45,21 @@ class ChatBroadCast(ChatMessage):
     user_id: int
 
 
-class SysEvent(BaseModel):
+class SysEventBroadcast(BaseModel):
     user_id: Optional[int] = None
-    event: str = Field(pattern="start|join|quit")
+    event: str = Field(pattern="start|close|join|quit")
 
 
 class BroadCast(BaseModel):
-    type: str = Field(pattern="chat|idea|combined_idea|comment|vote|sys_event")
+    type: str = Field(
+        pattern="chat|idea|combined_idea|comment|vote|sys_event|final_decision"
+    )
     content: Union[
         ChatBroadCast,
         IdeaResponse,
         CombinedIdeaResponse,
         CommentResponse,
         Vote,
-        SysEvent,
+        SysEventBroadcast,
+        FinalDecisionResponse,
     ]

@@ -10,7 +10,7 @@ class GoogleUserInfo(BaseModel):
     picture: str
     email: str
     email_verified: bool
-    locale: str
+    # locale: str
     hd: str
 
 

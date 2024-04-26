@@ -1,13 +1,18 @@
 from fastapi import WebSocket
 from sqlalchemy.orm import Session
-from app.scheme.ws_scheme import BroadCast, ChatBroadCast, SysEvent, Vote
+from app.core.exceptions import UnknownError
+from app.scheme.final_decision_scheme import FinalDecisionCreate, FinalDecisionRequest
+from app.scheme.ws_scheme import BroadCast, ChatBroadCast, SysEventBroadcast, Vote
 from app.scheme.combined_idea_scheme import CombinedIdeaCreate
-from app.scheme.idea_scheme import IdeaCreate, IdeaUpdateWS
-from app.scheme.comment_scheme import CommentCreate
+from app.scheme.idea_scheme import IdeaCreate, IdeaRequest, IdeaUpdateWS
+from app.scheme.comment_scheme import CommentCreate, CommentRequest
 from app.crud.idea_crud import create_idea, add_idea_vote, update_idea
 from app.crud.combined_idea_crud import create_combined_idea
 from app.crud.comment_crud import create_comment
+from app.crud.final_decision_crud import create_final_decision
 from app.scheme.ws_scheme import Message
+from app.crud.session_crud import start_session
+from typing import Optional
 
 
 class IdeationRoom:
@@ -15,6 +20,7 @@ class IdeationRoom:
         self.session_id = session_id
         self.active_users: list[WebSocket] = []
         self.ideas: list[int] = []
+        self.started: bool = False
 
     async def connect_user(self, ws: WebSocket):
         await ws.accept()
@@ -27,9 +33,22 @@ class IdeationRoom:
     def disconnect(self, ws: WebSocket):
         self.active_users.remove(ws)
 
-    async def broadcast_sys_event(self, event: SysEvent):
+    async def broadcast_sys_event(
+        self, event: SysEventBroadcast, db: Optional[Session] = None
+    ):
+        if event.event == "start":
+            if db:
+                start_session(db, self.session_id)
+                self.started = True
+            else:
+                raise UnknownError
+
         data = BroadCast(type="sys_event", content=event)
         await self.broadcast(data)
+
+        if event.event == "close":
+            for ws in self.active_users:
+                await ws.close()
 
     async def broadcast_vote(self, idea_id: int, db: Session) -> bool:
         if idea_id not in self.ideas:
@@ -42,7 +61,18 @@ class IdeationRoom:
 
         return True
 
-    async def broadcast_idea(self, idea: IdeaCreate, db: Session) -> bool:
+    async def broadcast_idea(
+        self, idea: IdeaRequest, user_id: int, session_id: int, db: Session
+    ) -> bool:
+        if not self.started:  # we only need this here because others depend on this
+            return False
+
+        idea = IdeaCreate(
+            **idea.model_dump(),
+            submitter_id=user_id,
+            session_id=session_id,
+        )
+
         try:
             idea = create_idea(db, idea)
         except:
@@ -88,9 +118,13 @@ class IdeationRoom:
 
         return True
 
-    async def broadcast_comment(self, comment: CommentCreate, db: Session) -> bool:
+    async def broadcast_comment(
+        self, comment: CommentRequest, user_id: int, db: Session
+    ) -> bool:
         if comment.idea_id not in self.ideas:
             return False
+
+        comment = CommentCreate(**comment.model_dump(), author_id=user_id)
 
         try:
             comment = create_comment(db, comment)
@@ -107,6 +141,26 @@ class IdeationRoom:
         data = BroadCast(type="chat", content=content)
 
         await self.broadcast(data)
+
+    async def broadcast_final_decision(
+        self, final_decision: FinalDecisionRequest, db: Session
+    ) -> bool:
+        if final_decision.idea_id not in self.ideas:
+            return False
+
+        final_decision = FinalDecisionCreate(
+            **final_decision.model_dump(), session_id=self.session_id
+        )
+
+        try:
+            final_decision = create_final_decision(db, final_decision)
+        except:
+            return False
+
+        data = BroadCast(type="final_decision", content=final_decision)
+        await self.broadcast(data)
+
+        return True
 
     @staticmethod
     async def send_msg(ws: WebSocket, msg: str):

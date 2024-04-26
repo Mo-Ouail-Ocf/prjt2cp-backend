@@ -13,7 +13,7 @@ from passlib.context import CryptContext
 
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
-    authorizationUrl="https://accounts.google.com/o/oauth2/auth?access_type=offline",  # &prompt=consent
+    authorizationUrl="https://accounts.google.com/o/oauth2/auth?access_type=offline&prompt=consent",
     tokenUrl="/v1/auth/token",
     refreshUrl="/v1/auth/refresh",
     scopes={

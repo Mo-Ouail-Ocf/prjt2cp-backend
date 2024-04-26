@@ -16,7 +16,7 @@ class Session(Base):
     session_status = Column(String)
     objectives = Column(Text, nullable=True)
     round_time = Column(Integer)
-    nb_rounds = Column(Integer)
+    nb_rounds = Column(Integer, default=1)
 
     project = relationship("Project", back_populates="sessions")
     ideas = relationship("Idea", back_populates="session")

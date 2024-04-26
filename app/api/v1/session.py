@@ -6,9 +6,14 @@ from app.dependencies import (
     valid_session_moderator,
     valid_project_user,
 )
-from app.scheme.session_scheme import SessionCreate, SessionResponse, SessionUpdate
+from app.scheme.session_scheme import (
+    SessionCreate,
+    SessionExport,
+    SessionResponse,
+    SessionUpdate,
+)
 from sqlalchemy.orm import Session
-from app.crud.session_crud import update_session, get_open_sessions
+from app.crud.session_crud import get_closed_sessions, update_session, get_open_sessions
 from app.services.session_service import (
     new_session,
     export_session_drive,
@@ -49,7 +54,16 @@ async def get_open_sessions_for_a_project(
     return get_open_sessions(db, project_id)
 
 
-@router.get("/{session_id}/")
+@router.get("/project/{project_id}/closed", response_model=list[SessionResponse])
+async def get_closed_sessions_for_a_project(
+    _: Annotated[int, Depends(valid_project_user)],
+    project_id: int,
+    db: Session = Depends(get_db),
+):
+    return get_closed_sessions(db, project_id)
+
+
+@router.get("/export/{session_id}/", response_model=SessionExport)
 async def session_as_json(
     _: Annotated[int, Depends(valid_session_moderator)],
     session_id: int,
@@ -58,7 +72,7 @@ async def session_as_json(
     return export_session(session_id, db)
 
 
-@router.get("/{session_id}/download")
+@router.get("/download/{session_id}")
 async def download_session_as_json(
     _: Annotated[int, Depends(valid_session_moderator)],
     session_id: int,
@@ -67,10 +81,11 @@ async def download_session_as_json(
     return export_session_file(session_id, db)
 
 
-@router.post("/{session_id}/drive")
+@router.post("/drive/{session_id}")
 async def upload_session_to_drive(
     user_id: Annotated[int, Depends(valid_session_moderator)],
     session_id: int,
+    file_name: str = "",
     db: Session = Depends(get_db),
 ):
-    await export_session_drive(user_id, session_id, db)
+    await export_session_drive(user_id, session_id, file_name, db)

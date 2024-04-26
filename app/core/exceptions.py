@@ -32,6 +32,26 @@ InvalidProjectError = HTTPException(
     detail="Project doesn't exist",
 )
 
+InvalidSessionError = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="Session doesn't exist",
+)
+
+InvalidProjectUserError = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Not a member of this project",
+)
+
+NotModeratorError = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Not a moderator",
+)
+
+SessionNotClosed = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Session must be closed",
+)
+
 
 async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
     if isinstance(exc, ExpiredSignatureError):
