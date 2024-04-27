@@ -132,3 +132,24 @@ def is_session_open(db: Session, session_id: int) -> bool:
         return False
 
     return session.session_status == "open"
+
+
+def get_moderators(db: Session, session_id: int) -> list[int]:
+    session = (
+        db.query(IdeationSession)
+        .filter(IdeationSession.session_id == session_id)
+        .first()
+    )
+
+    if session is None:
+        return []
+
+    return [
+        mod.user_id
+        for mod in (
+            db.query(ProjectUser)
+            .filter(ProjectUser.project_id == session.project_id)
+            .filter(ProjectUser.role == "moderator" or ProjectUser.role == "Admin")
+            .all()
+        )
+    ]

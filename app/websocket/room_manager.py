@@ -1,18 +1,19 @@
 from typing import Dict
 from sqlalchemy.orm import Session
 from app.websocket.ideation_room import IdeationRoom
-from app.crud.session_crud import close_started_session
+from app.crud.session_crud import close_started_session, get_moderators
 
 
 class RoomManager:
     def __init__(self):
         self.rooms: Dict[int, IdeationRoom] = {}
 
-    def get_room(self, session_id: int) -> IdeationRoom:
+    def get_room(self, session_id: int, db: Session) -> IdeationRoom:
         room = self.rooms.get(session_id)
 
         if room is None:
-            room = IdeationRoom(session_id)
+            mods = get_moderators(db, session_id)
+            room = IdeationRoom(session_id, mods)
             self.rooms.update({session_id: room})
 
         return room

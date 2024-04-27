@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from app.crud.final_decision_crud import get_final_decisions
 from app.dependencies import get_db
-from app.dependencies.project_user import valid_session_user
+from app.dependencies import valid_session_user
 from app.scheme.final_decision_scheme import FinalDecisionResponse
 from sqlalchemy.orm import Session
 

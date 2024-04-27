@@ -6,6 +6,7 @@ from app.dependencies import (
     valid_session_moderator,
     valid_project_user,
 )
+from app.dependencies.project_user import valid_session_user
 from app.scheme.session_scheme import (
     SessionCreate,
     SessionExport,
@@ -65,7 +66,7 @@ async def get_closed_sessions_for_a_project(
 
 @router.get("/export/{session_id}/", response_model=SessionExport)
 async def session_as_json(
-    _: Annotated[int, Depends(valid_session_moderator)],
+    _: Annotated[int, Depends(valid_session_user)],
     session_id: int,
     db: Session = Depends(get_db),
 ):
@@ -74,7 +75,7 @@ async def session_as_json(
 
 @router.get("/download/{session_id}")
 async def download_session_as_json(
-    _: Annotated[int, Depends(valid_session_moderator)],
+    _: Annotated[int, Depends(valid_session_user)],
     session_id: int,
     db: Session = Depends(get_db),
 ):
@@ -83,7 +84,7 @@ async def download_session_as_json(
 
 @router.post("/drive/{session_id}")
 async def upload_session_to_drive(
-    user_id: Annotated[int, Depends(valid_session_moderator)],
+    user_id: Annotated[int, Depends(valid_session_user)],
     session_id: int,
     file_name: str = "",
     db: Session = Depends(get_db),

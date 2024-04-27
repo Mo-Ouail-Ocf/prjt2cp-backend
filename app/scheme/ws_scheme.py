@@ -1,5 +1,5 @@
 from typing import Union, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from app.scheme.comment_scheme import CommentResponse, CommentRequest
 from app.scheme.final_decision_scheme import (
     FinalDecisionRequest,
@@ -7,10 +7,11 @@ from app.scheme.final_decision_scheme import (
 )
 from app.scheme.idea_scheme import IdeaRequest, IdeaResponse, IdeaUpdateWS
 from app.scheme.combined_idea_scheme import CombinedIdeaCreate, CombinedIdeaResponse
+from fastapi import WebSocket
 
 
 class SysEvent(BaseModel):
-    event: str = Field(pattern="start|close")
+    event: str = Field(pattern="join|joined|start|close|quit")
 
 
 class ChatMessage(BaseModel):
@@ -45,9 +46,8 @@ class ChatBroadCast(ChatMessage):
     user_id: int
 
 
-class SysEventBroadcast(BaseModel):
-    user_id: Optional[int] = None
-    event: str = Field(pattern="start|close|join|quit")
+class SysEventBroadcast(SysEvent):
+    users: list[int]
 
 
 class BroadCast(BaseModel):
@@ -63,3 +63,10 @@ class BroadCast(BaseModel):
         SysEventBroadcast,
         FinalDecisionResponse,
     ]
+
+
+class WSUser(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    ws: WebSocket
+    user_id: int
+    votes: list[int] = []  # keep track of user votes
