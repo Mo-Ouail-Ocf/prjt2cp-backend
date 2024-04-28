@@ -4,7 +4,7 @@ from jose.exceptions import JWTError
 from app.core.exceptions import httpx_error_hander, jwt_error_handler
 from starlette.middleware.cors import CORSMiddleware
 from app.api import router
-from app.core.config import GOOGLE_CLIENT_ID
+from app.core.config import GOOGLE_CLIENT_ID, scopes
 from app.core.database import Base, engine
 
 
@@ -14,7 +14,7 @@ app = FastAPI(
     swagger_ui_init_oauth={
         "clientId": GOOGLE_CLIENT_ID,
         "appName": "Backned",
-        "scopes": "openid profile email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file",
+        "scopes": "openid profile " + scopes,
     },
 )
 

@@ -1,85 +1,83 @@
 from fastapi import WebSocket, WebSocketDisconnect
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
-from app.crud.user_crud import get_user_by_id
 from app.scheme.combined_idea_scheme import CombinedIdeaCreate
-from app.scheme.idea_scheme import IdeaCreate
-from app.scheme.comment_scheme import CommentCreate
-from app.scheme.ws_scheme import ChatMessage, Vote
+from app.scheme.final_decision_scheme import FinalDecisionRequest
+from app.scheme.idea_scheme import IdeaRequest, IdeaUpdateWS
+from app.scheme.comment_scheme import CommentRequest
+from app.scheme.ws_scheme import ChatMessage, SysEvent, Vote
 from app.websocket.room_manager import room_manager
 from app.scheme.ws_scheme import Message
-from app.crud.session_crud import is_moderator
-from app.websocket.ideation_room import send_msg
 
 
 async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
-    ideation_room = room_manager.get_room(session_id)
-
-    await ideation_room.connect_user(ws)
-
-    user = get_user_by_id(db, user_id)
-    await ideation_room.broadcast_msg(0, f"{user.name} joined the session")
-
-    is_mod = is_moderator(db, session_id, user_id)
-    votes: list[int] = []  # keep track of user votes
-
-    msg = f"{user.name} kicked for rule violation"
+    ideation_room = room_manager.get_room(session_id, db)
+    user = await ideation_room.connect_user(ws, user_id)
 
     try:
         while True:
             data = await ws.receive_json()
             data = Message(**data)
 
-            if data.type == "idea":
-                idea = IdeaCreate(
-                    **data.content.model_dump(),
-                    submitter_id=user_id,
-                    session_id=session_id,
-                )
+            if data.type == "sys_event":
+                event = SysEvent.model_validate(data.content)
+                await ideation_room.broadcast_sys_event(user, event, db)
 
-                if not await ideation_room.broadcast_idea(idea, db):
-                    await send_msg(ws, "Counldn't create idea.")
+            elif data.type == "idea":
+                idea = IdeaRequest.model_validate(data.content)
+
+                if not await ideation_room.broadcast_idea(idea, user, db):
+                    await ideation_room.send_msg(ws, "Counldn't create idea.")
+
+            elif data.type == "idea_update":
+                idea = IdeaUpdateWS.model_validate(data.content)
+
+                if not await ideation_room.broadcast_idea_update(user, idea, db):
+                    await ideation_room.send_msg(ws, "Counldn't update idea.")
 
             elif data.type == "comment":
-                comment = CommentCreate(**data.content.model_dump(), author_id=user_id)
+                comment = CommentRequest.model_validate(data.content)
 
-                if not await ideation_room.broadcast_comment(comment, db):
-                    await send_msg(ws, "Counldn't create comment.")
+                if not await ideation_room.broadcast_comment(user, comment, db):
+                    await ideation_room.send_msg(ws, "Counldn't create comment.")
 
             elif data.type == "combined_idea":
-                if is_mod:
-                    combined_idea = CombinedIdeaCreate.model_validate(data.content)
+                combined_idea = CombinedIdeaCreate.model_validate(data.content)
 
-                    if not await ideation_room.broadcast_combined_idea(
-                        combined_idea, db
-                    ):
-                        await send_msg(ws, "Counldn't create combined idea.")
-                else:
-                    await send_msg(ws, "Only moderators can combine ideas!")
+                if not await ideation_room.broadcast_combined_idea(
+                    user, combined_idea, db
+                ):
+                    await ideation_room.send_msg(ws, "Counldn't create combined idea.")
 
             elif data.type == "vote":
                 idea_id = Vote.model_validate(data.content).idea_id
 
-                if idea_id in votes:
-                    await send_msg(ws, "Already voted for this idea!")
-                    continue
+                if not await ideation_room.broadcast_vote(user, idea_id, db):
+                    await ideation_room.send_msg(ws, "Couldn't vote!")
 
-                if await ideation_room.broadcast_vote(idea_id, db):
-                    votes.append(idea_id)
-                else:
-                    await send_msg(ws, "Couldn't vote!")
+            elif data.type == "final_decision":
+                final_decision = FinalDecisionRequest.model_validate(data.content)
+
+                if not await ideation_room.broadcast_final_decision(
+                    user, final_decision, db
+                ):
+                    await ideation_room.send_msg(ws, "Counldn't create final decision.")
 
             else:
                 msg = ChatMessage.model_validate(data.content).msg
 
                 await ideation_room.broadcast_msg(user_id, msg)
 
+    except ValidationError:
+        await ideation_room.send_msg(ws, "Illigal action")
+
     except WebSocketDisconnect:
-        msg = f"{user.name} has left the session"
+        pass
 
     finally:
-        ideation_room.disconnect(ws)
+        ideation_room.disconnect(user)
 
         if len(ideation_room.active_users) == 0:
             room_manager.delete_room(db, ideation_room.session_id)
         else:
-            await ideation_room.broadcast_msg(0, msg)
+            await ideation_room.broadcast_sys_event(user, SysEvent(event="quit"))

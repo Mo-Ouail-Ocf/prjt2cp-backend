@@ -18,10 +18,21 @@ class IdeaCreate(IdeaRequest):
     session_id: int
 
 
+class IdeaUpdate(IdeaBase):
+    content: Optional[str]
+    details: Optional[str]
+    deleted: bool = False
+
+
+class IdeaUpdateWS(IdeaUpdate):
+    idea_id: int
+
+
 class IdeaResponse(IdeaCreate):
     idea_id: int
     creation_date: datetime
     votes: Optional[int]
+    deleted: bool
 
     class Config:
         from_attributes = True

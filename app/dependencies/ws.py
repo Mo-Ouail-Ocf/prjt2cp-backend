@@ -10,7 +10,7 @@ def get_ws_user(access_token: Annotated[str, Query()]) -> int:
     return decode_access_token(access_token)
 
 
-def valid_session_user(
+def valid_session_user_ws(
     user_id: Annotated[int, Depends(get_ws_user)],
     session_id: int,
     db: Session = Depends(get_db),
@@ -24,7 +24,7 @@ def valid_session_user(
     )
 
 
-def session_open(session_id: int, db: Session = Depends(get_db)) -> int:
+def session_open_ws(session_id: int, db: Session = Depends(get_db)) -> int:
     if is_session_open(db, session_id):
         return session_id
 

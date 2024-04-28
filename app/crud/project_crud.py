@@ -75,6 +75,7 @@ def get_owned_projects(db: Session, user_id: int) -> List[ProjectDisplay]:
                 ),
                 role=pu.role,
                 invitation_status=pu.invitation_status,
+                invitation_time=pu.invitation_time,
             )
             for pu in project.project_users
             if pu.user_id != user_id  # Exclude the owner from the participants list

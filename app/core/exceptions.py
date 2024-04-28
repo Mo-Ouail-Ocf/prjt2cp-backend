@@ -8,6 +8,10 @@ InvalidGoogleCridentialsError = HTTPException(
     status.HTTP_417_EXPECTATION_FAILED, detail="Couldn't validate google user"
 )
 
+DriveUploadError = HTTPException(
+    status.HTTP_424_FAILED_DEPENDENCY, detail="Counldn't upload file to drive"
+)
+
 InvalidCredentialsError = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
@@ -26,6 +30,26 @@ UnknownError = HTTPException(
 InvalidProjectError = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND,
     detail="Project doesn't exist",
+)
+
+InvalidSessionError = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="Session doesn't exist",
+)
+
+InvalidProjectUserError = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Not a member of this project",
+)
+
+NotModeratorError = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Not a moderator",
+)
+
+SessionNotClosed = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Session must be closed",
 )
 
 

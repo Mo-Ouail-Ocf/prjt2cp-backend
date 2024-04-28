@@ -30,7 +30,7 @@ async def generate_tokens(code: str, redirect_uri: str, db: Session) -> Token:
             google_refresh_token=google_token.refresh_token,
         )
         db_user = user_crud.create_user(db, user)
-    else:
+    elif google_token.refresh_token:
         user_crud.update_google_refresh_token(db, db_user, google_token.refresh_token)
 
     access_token = create_access_token(db_user.user_id)
