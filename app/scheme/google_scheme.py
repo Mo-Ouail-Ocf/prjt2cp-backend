@@ -16,7 +16,7 @@ class GoogleUserInfo(BaseModel):
 class GoogleToken(BaseModel):
     access_token: str
     expires_in: int
-    refresh_token: str= Field(None, alias='refresh_token')#any issue
+    refresh_token: str#= Field(None, alias='refresh_token')#any issue
     scope: str
     token_type: str
     id_token: str

@@ -35,6 +35,7 @@ async def get_google_token(code, redirect_uri) -> GoogleToken:
 
         if response.status_code == 200:
             token_data = response.json()
+            print(token_data)
 
             return GoogleToken.model_validate(token_data)
 
