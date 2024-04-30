@@ -28,7 +28,7 @@ oauth2_scheme = OAuth2AuthorizationCodeBearer(
 password_contex = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def hash_passowrd(password: str) -> str:
+def hash_password(password: str) -> str:
     return password_contex.hash(password)
 
 

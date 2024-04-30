@@ -33,3 +33,11 @@ async def change_password(
     new_password: str = Form(),
 ):
     return set_password(user_id, old_password, new_password, db)
+
+
+@router.get("/{user_id}", response_model=UserResponse)
+async def get_user_by_id(
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    return get_user(user_id, db)

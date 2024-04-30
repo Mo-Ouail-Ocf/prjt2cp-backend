@@ -1,6 +1,6 @@
 from pydantic import AnyHttpUrl
 from sqlalchemy.orm import Session
-from app.core.security import hash_passowrd
+from app.core.security import hash_password
 from app.models import User
 from app.scheme.user_scheme import UserCreate
 
@@ -41,8 +41,9 @@ def update_name(db: Session, user: User, name: str) -> User:
 
 
 def update_password(db: Session, user: User, password: str) -> User:
-    user.hash_passoword = hash_passowrd(password)
+    user.hash_password = hash_password(password)
     db.commit()
+    db.refresh(user)
     return user
 
 

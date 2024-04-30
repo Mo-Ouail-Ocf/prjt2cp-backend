@@ -52,6 +52,10 @@ SessionNotClosed = HTTPException(
     detail="Session must be closed",
 )
 
+InvalidUserError = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail="User doesn't exist",
+)
 
 async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
     if isinstance(exc, ExpiredSignatureError):

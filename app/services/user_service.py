@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
 from app.core.security import verify_password
 from app.crud import user_crud
-from app.core.exceptions import InvalidCredentialsError
+from app.core.exceptions import InvalidCredentialsError, InvalidUserError
 from app.scheme.user_scheme import UserResponse
 
 
 def rename_user(user_id: int, name: str, db: Session) -> UserResponse:
     user = user_crud.get_user_by_id(db, user_id)
     if user is None:
-        raise InvalidCredentialsError
+        raise InvalidUserError
 
     user = user_crud.update_name(db, user, name)
     return UserResponse(
@@ -19,7 +19,7 @@ def rename_user(user_id: int, name: str, db: Session) -> UserResponse:
 def get_user(user_id: int, db: Session) -> UserResponse:
     user = user_crud.get_user_by_id(db, user_id)
     if user is None:
-        raise InvalidCredentialsError
+        raise InvalidUserError
 
     return UserResponse(
         id=user.user_id, email=user.esi_email, name=user.name, pfp=user.profile_picture
@@ -31,11 +31,11 @@ def set_password(
 ) -> UserResponse:
     user = user_crud.get_user_by_id(db, user_id)
     if user is None:
-        raise InvalidCredentialsError
+        raise InvalidUserError
 
     if not (
-        user.hash_passoword is None
-        or verify_password(old_password, user.hash_passoword)
+        user.hash_password is None
+        or verify_password(old_password, user.hash_password)
     ):
         raise InvalidCredentialsError
 
