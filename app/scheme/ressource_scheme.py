@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from typing import Optional
 
 
@@ -15,6 +15,7 @@ class ResourceDisplay(BaseModel):
     type: str
     level: Optional[str] = None
     description: Optional[str] = None
+    photo: Optional[HttpUrl] = None
 
     class Config:
         from_attributes = True
