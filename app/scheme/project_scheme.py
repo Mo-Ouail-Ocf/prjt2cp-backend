@@ -17,7 +17,6 @@ class ProjectUserDisplay(BaseModel):
     user: UserBase
     role: str
     invitation_status: str
-    invitation_time: datetime
 
     class Config:
         from_attributes = True
@@ -77,7 +76,7 @@ class PendingInvitationInfo(BaseModel):
     creator_name: str
     creator_email: EmailStr
     invitation_time: datetime
-
+    creator_image:str
     class Config:
         from_attributes = True
 

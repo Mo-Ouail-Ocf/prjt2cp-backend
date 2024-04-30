@@ -34,8 +34,8 @@ def set_password(
         raise InvalidCredentialsError
 
     if not (
-        user.hash_passoword is None
-        or verify_password(old_password, user.hash_passoword)
+        user.hash_password is None
+        or verify_password(old_password, user.hash_password)
     ):
         raise InvalidCredentialsError
 
