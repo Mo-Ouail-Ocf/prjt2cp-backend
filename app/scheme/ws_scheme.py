@@ -11,7 +11,7 @@ from fastapi import WebSocket
 
 
 class SysEvent(BaseModel):
-    event: str = Field(pattern="join|joined|start|close|quit")
+    event: str = Field(pattern="join|joined|start|close|quit|next")
 
 
 class ChatMessage(BaseModel):

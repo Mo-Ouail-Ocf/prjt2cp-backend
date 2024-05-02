@@ -1,0 +1,23 @@
+version: '3'
+services:
+    api:
+        build: .
+        ports:
+            - 8000:8000
+        env_file:
+            - .env
+        environment:
+            - DATABASE_URL=postgresql://postgres:password@database/Prjt2cp-database
+    database:
+        image: postgres
+        environment:
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=Prjt2cp-database
+        volumes:
+            - postgres-db:/var/lib/postgresql/data
+
+volumes:
+    postgres-db:
+
+
+#DATABASE_URL="postgresql://rayane:database@postgres/Prjt2cp-database"

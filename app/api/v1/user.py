@@ -36,8 +36,5 @@ async def change_password(
 
 
 @router.get("/{user_id}", response_model=UserResponse)
-async def get_user_by_id(
-    user_id: int,
-    db: Session = Depends(get_db)
-):
+async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return get_user(user_id, db)

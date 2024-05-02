@@ -55,7 +55,10 @@ class IdeationRoom:
     async def broadcast_sys_event(
         self, user: WSUser, event: SysEvent, db: Optional[Session] = None
     ):
-        if event.event in ["start", "close"] and not user.user_id in self.moderators:
+        if (
+            event.event in ["start", "close", "next"]
+            and not user.user_id in self.moderators
+        ):
             return await self.send_msg(
                 user.ws, "Only moderators can create sys events!"
             )
@@ -73,7 +76,7 @@ class IdeationRoom:
 
         if event.event == "close":
             for user in self.active_users:
-                await self.disconnect(user)
+                self.disconnect(user)
 
     async def broadcast_vote(self, user: WSUser, idea_id: int, db: Session) -> bool:
         if idea_id in user.votes:

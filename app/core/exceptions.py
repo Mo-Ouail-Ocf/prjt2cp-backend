@@ -57,6 +57,7 @@ InvalidUserError = HTTPException(
     detail="User doesn't exist",
 )
 
+
 async def jwt_error_handler(request: Request, exc: JWTError) -> JSONResponse:
     if isinstance(exc, ExpiredSignatureError):
         code = status.HTTP_403_FORBIDDEN
