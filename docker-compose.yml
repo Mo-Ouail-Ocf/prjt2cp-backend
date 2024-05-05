@@ -18,6 +18,3 @@ services:
 
 volumes:
     postgres-db:
-
-
-#DATABASE_URL="postgresql://rayane:database@postgres/Prjt2cp-database"
