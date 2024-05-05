@@ -130,7 +130,7 @@ def read_pending_invitations(
             creator_name=invitation["creator_name"],
             creator_email=invitation["creator_email"],
             creator_image=invitation["creator_image"],
-            invitation_time=invitation["invitation_time"]
+            invitation_time=invitation["invitation_time"],
         )
         for invitation in invitations
     ]

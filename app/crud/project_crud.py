@@ -155,7 +155,11 @@ def get_participated_projects(db: Session, user_id: int) -> List[ProjectDisplay]
     projects = (
         db.query(Project)
         .join(ProjectUser, ProjectUser.project_id == Project.project_id)
-        .filter(ProjectUser.user_id == user_id, Project.owner_id != user_id,ProjectUser.invitation_status=="accepted")
+        .filter(
+            ProjectUser.user_id == user_id,
+            Project.owner_id != user_id,
+            ProjectUser.invitation_status == "accepted",
+        )
         .options(
             joinedload(Project.project_users).joinedload(ProjectUser.user),
             contains_eager(Project.resource),
@@ -227,7 +231,7 @@ def get_pending_invitations(db: Session, user_id: int):
             User.name.label("creator_name"),
             User.esi_email.label("creator_email"),
             User.profile_picture.label("creator_image"),
-            ProjectUser.invitation_time.label("invitation_time")
+            ProjectUser.invitation_time.label("invitation_time"),
         )
         .select_from(ProjectUser)
         .join(Project, ProjectUser.project_id == Project.project_id)
@@ -244,10 +248,10 @@ def get_pending_invitations(db: Session, user_id: int):
             "project_description": project_description,
             "creator_name": creator_name,
             "creator_email": creator_email,
-            "creator_image":creator_image,
-            "invitation_time": invitation_time.isoformat()
+            "creator_image": creator_image,
+            "invitation_time": invitation_time.isoformat(),
         }
-        for project_id, project_title, project_description, creator_name, creator_email,creator_image,invitation_time in result
+        for project_id, project_title, project_description, creator_name, creator_email, creator_image, invitation_time in result
     ]
 
 

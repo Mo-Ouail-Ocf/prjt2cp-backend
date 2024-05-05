@@ -17,12 +17,13 @@
                     <button>Connect</button>
                 </form>
             </div>
-            <button onclick="disconnect()">Disconnect</button>
+            <button onclick="disconnect(event)">Disconnect</button>
         </div>
         <div>
             <h2>Events: </h2>
             <button onclick="start_session()">start</button>
             <button onclick="close_session()">close</button>
+            <button onclick="next()">next</button>
             <ul id='sys_events'></ul>
         </div>
         <div>
@@ -138,6 +139,16 @@
                     type: "sys_event",
                     content: {
                         event: "close"
+                    }
+                }
+                ws.send(JSON.stringify(data))
+            }
+
+            function next() {
+                var data = {
+                    type: "sys_event",
+                    content: {
+                        event: "next"
                     }
                 }
                 ws.send(JSON.stringify(data))

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models import Resource
-from app.core.database import engine
+from app.core.database import engine, Base
 from typing import List
 from pydantic import BaseModel
 import json
@@ -53,7 +53,10 @@ def init_module_list(db: Session) -> None:
                         description=f"{module.ddc}: {module.title}",
                     )
                     db.add(resource)
-    db.commit()
+
+        db.commit()
+    else:
+        print("Module list is aleady in db")
 
 
 def init_club_list(db: Session) -> None:
@@ -75,12 +78,19 @@ def init_club_list(db: Session) -> None:
                     photo=club.pfp_url,
                 )
                 db.add(resource)
-    db.commit()
+        db.commit()
+    else:
+        print("Club list is aleady in db")
 
 
 def main() -> None:
+    print("initializing DB")
+    Base.metadata.create_all(bind=engine)
+
     with Session(engine) as db:
+        print("initializing module list")
         init_module_list(db)
+        print("initializing club list")
         init_club_list(db)
 
 

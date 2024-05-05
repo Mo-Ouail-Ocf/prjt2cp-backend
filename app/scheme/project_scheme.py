@@ -58,7 +58,7 @@ class ProjectDisplay(BaseModel):
     participants: List[ProjectUserDisplay] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ProjectInvitationCreate(BaseModel):
@@ -76,7 +76,8 @@ class PendingInvitationInfo(BaseModel):
     creator_name: str
     creator_email: EmailStr
     invitation_time: datetime
-    creator_image:str
+    creator_image: str
+
     class Config:
         from_attributes = True
 
