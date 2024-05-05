@@ -86,3 +86,18 @@ class UpdateInvitation(BaseModel):
 
     class Config:
         from_attributes = True
+
+class SessionSchema(BaseModel):
+    session_id: int
+    project_id: int
+    title: str
+    description: Optional[str]
+    ideation_technique: str
+    start_time: datetime
+    session_status: str
+    objectives: Optional[str]
+    round_time: int
+    nb_rounds: int
+
+    class Config:
+        from_attributes = True

@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session, joinedload, contains_eager
 from typing import List
 from app.models.project import Project
+from app.models.resource import Resource
+from app.models.session import Session
 from app.models.project_user import ProjectUser
 from app.models.user import User
 from app.scheme.project_scheme import (
@@ -30,6 +32,57 @@ def create_project(db: Session, project_data: dict) -> Project:
 def get_project(db: Session, project_id: int) -> Project:
     return db.query(Project).filter(Project.project_id == project_id).first()
 
+
+def get_project_details(db: Session, project_id: int) -> ProjectDisplay:
+    # Query the project with project_id
+    project = db.query(Project).filter(Project.project_id == project_id).first()
+
+    if project:
+        # Query the related resource (if any)
+        resource_data = None
+        if project.resource_id:
+            resource = db.query(Resource).filter(Resource.resource_id == project.resource_id).first()
+            if resource:
+                resource_data = {
+                    "resource_id": resource.resource_id,
+                    "name": resource.name,
+                    "type": resource.type,
+                    "level": resource.level,
+                    "description": resource.description,
+                    "photo": resource.photo,
+                }
+
+        # Query the participants (project users) and their related user details
+        participants_data = []
+        project_users = db.query(ProjectUser).filter(ProjectUser.project_id == project_id).all()
+        for project_user in project_users:
+            user = db.query(User).filter(User.user_id == project_user.user_id).first()
+            if user:
+                participant_data = {
+                    "user": {  # Structure the user data within a 'user' key
+                        "user_id": user.user_id,
+                        "name": user.name,
+                        "email":user.esi_email,
+                        "image":user.profile_picture
+                    },
+                    "role": project_user.role,
+                    "invitation_status": project_user.invitation_status,
+                }
+                participants_data.append(participant_data)
+
+        # Create ProjectDisplay object with extracted data
+        return ProjectDisplay(
+            project_id=project.project_id,
+            title=project.title,
+            description=project.description,
+            status=project.status,
+            creation_date=project.creation_date,
+            owner_id=project.owner_id,
+            resource=resource_data,
+            participants=participants_data,
+        )
+
+    return None  # or raise an exception if project not found
 
 def update_project(db: Session, project_id: int, update_data: dict) -> Project:
     project = get_project(db, project_id)
@@ -219,3 +272,6 @@ def update_invitation_status(
     db.commit()
     db.refresh(project_user)
     return project_user
+
+def get_sessions_by_project_id(db: Session, project_id: int):
+    return db.query(Session).filter(Session.project_id == project_id).all()
