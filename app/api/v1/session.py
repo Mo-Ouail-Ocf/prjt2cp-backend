@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from app.crud.session_crud import get_closed_sessions, update_session, get_open_sessions
 from app.services.session_service import (
     new_session,
+    get_session_service,
     export_session_drive,
     export_session_file,
     export_session,
@@ -24,6 +25,15 @@ from app.services.session_service import (
 
 
 router = APIRouter()
+
+
+@router.get("/{session_id}", response_model=SessionResponse)
+async def get_session_by_id(
+    _: Annotated[int, Depends(valid_session_user)],
+    session_id: int,
+    db: Session = Depends(get_db),
+):
+    return await get_session_service(session_id, db)
 
 
 @router.post("/project/{project_id}", response_model=SessionResponse)
