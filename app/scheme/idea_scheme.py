@@ -31,7 +31,7 @@ class IdeaUpdateWS(IdeaUpdate):
 class IdeaResponse(IdeaCreate):
     idea_id: int
     creation_date: datetime
-    votes: Optional[int]
+    votes: int
     deleted: bool
 
     class Config:

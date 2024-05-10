@@ -41,7 +41,11 @@ def get_project_details(db: Session, project_id: int) -> ProjectDisplay:
         # Query the related resource (if any)
         resource_data = None
         if project.resource_id:
-            resource = db.query(Resource).filter(Resource.resource_id == project.resource_id).first()
+            resource = (
+                db.query(Resource)
+                .filter(Resource.resource_id == project.resource_id)
+                .first()
+            )
             if resource:
                 resource_data = {
                     "resource_id": resource.resource_id,
@@ -54,7 +58,9 @@ def get_project_details(db: Session, project_id: int) -> ProjectDisplay:
 
         # Query the participants (project users) and their related user details
         participants_data = []
-        project_users = db.query(ProjectUser).filter(ProjectUser.project_id == project_id).all()
+        project_users = (
+            db.query(ProjectUser).filter(ProjectUser.project_id == project_id).all()
+        )
         for project_user in project_users:
             user = db.query(User).filter(User.user_id == project_user.user_id).first()
             if user:
@@ -62,8 +68,8 @@ def get_project_details(db: Session, project_id: int) -> ProjectDisplay:
                     "user": {  # Structure the user data within a 'user' key
                         "user_id": user.user_id,
                         "name": user.name,
-                        "email":user.esi_email,
-                        "image":user.profile_picture
+                        "email": user.esi_email,
+                        "image": user.profile_picture,
                     },
                     "role": project_user.role,
                     "invitation_status": project_user.invitation_status,
@@ -83,6 +89,7 @@ def get_project_details(db: Session, project_id: int) -> ProjectDisplay:
         )
 
     return None  # or raise an exception if project not found
+
 
 def update_project(db: Session, project_id: int, update_data: dict) -> Project:
     project = get_project(db, project_id)
@@ -276,6 +283,7 @@ def update_invitation_status(
     db.commit()
     db.refresh(project_user)
     return project_user
+
 
 def get_sessions_by_project_id(db: Session, project_id: int):
     return db.query(Session).filter(Session.project_id == project_id).all()

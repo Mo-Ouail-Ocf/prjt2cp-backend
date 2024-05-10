@@ -88,6 +88,7 @@ class UpdateInvitation(BaseModel):
     class Config:
         from_attributes = True
 
+
 class SessionSchema(BaseModel):
     session_id: int
     project_id: int

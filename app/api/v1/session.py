@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends
 from app.dependencies import (
     get_db,
     valid_project_moderator,
@@ -41,9 +41,10 @@ async def create_a_session(
     _: Annotated[int, Depends(valid_project_moderator)],
     project_id: int,
     create_data: Annotated[SessionCreate, Depends()],
+    bg_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
-    return await new_session(project_id, create_data, db)
+    return await new_session(project_id, create_data, bg_tasks, db)
 
 
 @router.put("/{session_id}", response_model=SessionResponse)

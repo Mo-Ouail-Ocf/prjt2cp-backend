@@ -6,7 +6,10 @@ from app.scheme.final_decision_scheme import (
     FinalDecisionResponse,
 )
 from app.scheme.idea_scheme import IdeaRequest, IdeaResponse, IdeaUpdateWS
-from app.scheme.combined_idea_scheme import CombinedIdeaCreate, CombinedIdeaResponse
+from app.scheme.combined_idea_scheme import (
+    CombinedIdeaResponse,
+    CombinedIdeaWSCreate,
+)
 from fastapi import WebSocket
 
 
@@ -32,7 +35,7 @@ class Message(BaseModel):
             ChatMessage,
             IdeaRequest,
             IdeaUpdateWS,
-            CombinedIdeaCreate,
+            CombinedIdeaWSCreate,
             CommentRequest,
             SysEvent,
             # order is importent

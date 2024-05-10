@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import Annotated, List
 from app.dependencies.database import get_db
@@ -12,7 +12,7 @@ from app.scheme.project_scheme import (
     ProjectInvitationCreate,
     ProjectInvitationResponse,
     UpdateInvitation,
-    SessionSchema
+    SessionSchema,
 )
 from app.services import project_service
 from app.services.project_service import (
@@ -28,7 +28,11 @@ from app.services.project_service import (
 from app.dependencies.user import get_current_user
 from app.services.user_service import get_user
 from app.crud.user_crud import get_user_by_email
-from app.crud.project_crud import get_users , get_sessions_by_project_id,get_project_details
+from app.crud.project_crud import (
+    get_users,
+    get_sessions_by_project_id,
+    get_project_details,
+)
 from app.services.email_service import (
     send_invitation_email,
     send_invitation_response_email,
@@ -36,13 +40,14 @@ from app.services.email_service import (
 
 router = APIRouter()
 
+
 @router.get("/{project_id}/", response_model=ProjectDisplay)
 async def get_details(
     _: Annotated[int, Depends(valid_project_user)],
     project_id: int,
     db: Session = Depends(get_db),
 ):
-    return get_project_details(db,project_id)
+    return get_project_details(db, project_id)
 
 
 @router.post("/", response_model=ProjectDisplay)
@@ -140,6 +145,7 @@ def read_pending_invitations(
 async def invite(
     project_id: int,
     email: ProjectInvitationCreate,
+    bg_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     sender_id: int = Depends(get_current_user),
 ):
@@ -158,7 +164,7 @@ async def invite(
     if receiver in users:
         return ProjectInvitationResponse(message="The user is already invited")
     message = invite_user(db, project_id, receiver.user_id, role="contributor")
-    await send_invitation_email(str(email.email), project.title, user.name)
+    send_invitation_email(str(email.email), project.title, user.name, bg_tasks)
     return ProjectInvitationResponse(message=message["message"])
 
 
@@ -171,6 +177,7 @@ this function must be testes as soon as possible
 async def handle_invitation(
     project_id: int,
     update_invitation: UpdateInvitation,
+    bg_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_current_user),
 ):
@@ -188,21 +195,24 @@ async def handle_invitation(
             status.HTTP_400_BAD_REQUEST, detail="the user is the creator of the project"
         )
     creator = db.query(User).filter(User.user_id == project.owner_id).first()
-    await send_invitation_response_email(
-        creator.esi_email, project.title, user.name, update_invitation.status
+    send_invitation_response_email(
+        creator.esi_email, project.title, user.name, update_invitation.status, bg_tasks
     )
     handle_invitation_response(db, project_id, user_id, update_invitation.status)
     return ProjectInvitationResponse(message="Handling invitation success")
+
 
 @router.get("/{project_id}/sessions", response_model=list[SessionSchema])
 def get_sessions_for_project(
     project_id: int,
     user_id: int = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
-    users = get_users(db,project_id)
+    users = get_users(db, project_id)
     user_found = any(user.user_id == user_id for user in users)
     if not user_found:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="not authorized")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="not authorized"
+        )
     sessions = get_sessions_by_project_id(db, project_id)
     return sessions

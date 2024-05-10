@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from app.scheme.idea_scheme import IdeaRequest
 
 
 class CombinedIdeaBase(BaseModel):
@@ -13,3 +14,8 @@ class CombinedIdeaCreate(CombinedIdeaBase):
 class CombinedIdeaResponse(CombinedIdeaCreate):
     class Config:
         from_attributes = True
+
+
+class CombinedIdeaWSCreate(BaseModel):
+    idea: IdeaRequest
+    source_idea_ids: list[int]

@@ -1,9 +1,10 @@
+from fastapi import BackgroundTasks
 from fastapi_mail import FastMail, MessageSchema
 from app.core.config import mail_config
 
 
-async def send_invitation_email(
-    recipient_email: str, project_name: str, sender_name: str
+def send_invitation_email(
+    recipient_email: str, project_name: str, sender_name: str, bg_tasks: BackgroundTasks
 ):
     html = f"""
     <p>Hi,</p>
@@ -19,11 +20,15 @@ async def send_invitation_email(
     )
 
     fm = FastMail(mail_config)
-    await fm.send_message(message)
+    bg_tasks.add_task(fm.send_message, message)
 
 
-async def send_invitation_response_email(
-    creator_email: str, project_name: str, responder_name: str, response: str
+def send_invitation_response_email(
+    creator_email: str,
+    project_name: str,
+    responder_name: str,
+    response: str,
+    bg_tasks: BackgroundTasks,
 ):
     response_msg = "accepted" if response else "refused"
     html = f"""
@@ -39,10 +44,12 @@ async def send_invitation_response_email(
     )
 
     fm = FastMail(mail_config)
-    await fm.send_message(message)
+    bg_tasks.add_task(fm.send_message, message)
 
 
-async def send_session_email(recipient_email: str, project_title: str):
+def send_session_email(
+    recipient_email: str, project_title: str, bg_tasks: BackgroundTasks
+):
     html = """
     <p>Hi,</p>
     <p>There is a new open session waiting for you.</p>
@@ -57,4 +64,4 @@ async def send_session_email(recipient_email: str, project_title: str):
     )
 
     fm = FastMail(mail_config)
-    await fm.send_message(message)
+    bg_tasks.add_task(fm.send_message, message)

@@ -22,9 +22,6 @@ def add_idea_vote(db: Session, idea_id: int):
     if not idea:
         return
 
-    if idea.votes is None:
-        idea.votes = 0
-
     idea.votes += 1
     db.commit()
 

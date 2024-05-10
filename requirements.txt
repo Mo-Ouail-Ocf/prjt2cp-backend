@@ -11,3 +11,4 @@ passlib[bcrypt]==1.7.4
 fastapi-mail==1.4.1
 aiogoogle==5.7.0 
 openai==1.23.2
+websockets==12.0

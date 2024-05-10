@@ -10,7 +10,7 @@ from app.scheme.ws_scheme import (
     Vote,
     Message,
 )
-from app.scheme.combined_idea_scheme import CombinedIdeaCreate
+from app.scheme.combined_idea_scheme import CombinedIdeaCreate, CombinedIdeaWSCreate
 from app.scheme.idea_scheme import IdeaCreate, IdeaRequest, IdeaUpdateWS
 from app.scheme.comment_scheme import CommentCreate, CommentRequest
 from app.crud.idea_crud import create_idea, add_idea_vote, update_idea
@@ -39,16 +39,17 @@ class IdeationRoom:
         await ws.send_json(
             BroadCast(type="sys_event", content=content).model_dump_json()
         )
-        await self.broadcast_sys_event(user, SysEvent(event="join"))
 
         self.active_users.append(user)
+        await self.broadcast_sys_event(user, SysEvent(event="join"))
+
         return user
 
     async def broadcast(self, data: BroadCast):
         for user in self.active_users:
             await user.ws.send_json(data.model_dump_json())
 
-    def disconnect(self, user: WSUser):
+    async def remove_user(self, user: WSUser):
         if user in self.active_users:
             self.active_users.remove(user)
 
@@ -57,7 +58,7 @@ class IdeationRoom:
     ):
         if (
             event.event in ["start", "close", "next"]
-            and not user.user_id in self.moderators
+            and user.user_id not in self.moderators
         ):
             return await self.send_msg(
                 user.ws, "Only moderators can create sys events!"
@@ -76,7 +77,7 @@ class IdeationRoom:
 
         if event.event == "close":
             for user in self.active_users:
-                self.disconnect(user)
+                await self.remove_user(user)
 
     async def broadcast_vote(self, user: WSUser, idea_id: int, db: Session) -> bool:
         if idea_id in user.votes:
@@ -121,11 +122,11 @@ class IdeationRoom:
     async def broadcast_idea_update(
         self, user: WSUser, idea: IdeaUpdateWS, db: Session
     ) -> bool:
-        if not user.user_id in self.moderators:
+        if user.user_id not in self.moderators:
             await self.send_msg(user.ws, "Only moderators can refine ideas!")
             return True
 
-        if not idea.idea_id in self.ideas:
+        if idea.idea_id not in self.ideas:
             return False
 
         try:
@@ -139,27 +140,43 @@ class IdeationRoom:
         return True
 
     async def broadcast_combined_idea(
-        self, user: WSUser, combined_idea: CombinedIdeaCreate, db: Session
+        self, user: WSUser, combined_idea: CombinedIdeaWSCreate, db: Session
     ) -> bool:
-        if not user.user_id in self.moderators:
-            await self.send_msg(user.ws, "Only moderators can combine ideas!")
+        if user.user_id not in self.moderators:
+            await self.send_msg(user.ws, "Only moderators can create combined ideas!")
             return True
 
-        if combined_idea.source_idea_id not in self.ideas:
-            return False
+        if len(combined_idea.source_idea_ids) < 2:
+            await self.send_msg(user.ws, "You must specify at leat 2 source ideas")
+            return True
 
-        if combined_idea.combined_idea_id not in self.ideas:
-            return False
+        for source_idea_id in combined_idea.source_idea_ids:
+            if source_idea_id not in self.ideas:
+                return False
 
         try:
-            combined_idea = create_combined_idea(db, combined_idea)
+            idea = IdeaCreate(
+                **combined_idea.idea.model_dump(),
+                submitter_id=user.user_id,
+                session_id=self.session_id,
+            )
+
+            idea = create_idea(db, idea)
+            data = BroadCast(type="idea", content=idea)
+
+            await self.broadcast(data)
+
+            for source_idea_id in combined_idea.source_idea_ids:
+                a = CombinedIdeaCreate(
+                    combined_idea_id=idea.idea_id,
+                    source_idea_id=source_idea_id,
+                )
+                combined_idea = create_combined_idea(db, a)
+                data = BroadCast(type="combined_idea", content=combined_idea)
+                await self.broadcast(data)
+            return True
         except:
             return False
-
-        data = BroadCast(type="combined_idea", content=combined_idea)
-        await self.broadcast(data)
-
-        return True
 
     async def broadcast_comment(
         self, user: WSUser, comment: CommentRequest, db: Session

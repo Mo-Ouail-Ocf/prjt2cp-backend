@@ -1,7 +1,7 @@
 from fastapi import WebSocket, WebSocketDisconnect
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
-from app.scheme.combined_idea_scheme import CombinedIdeaCreate
+from app.scheme.combined_idea_scheme import CombinedIdeaWSCreate
 from app.scheme.final_decision_scheme import FinalDecisionRequest
 from app.scheme.idea_scheme import IdeaRequest, IdeaUpdateWS
 from app.scheme.comment_scheme import CommentRequest
@@ -42,7 +42,7 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
                     await ideation_room.send_msg(ws, "Counldn't create comment.")
 
             elif data.type == "combined_idea":
-                combined_idea = CombinedIdeaCreate.model_validate(data.content)
+                combined_idea = CombinedIdeaWSCreate.model_validate(data.content)
 
                 if not await ideation_room.broadcast_combined_idea(
                     user, combined_idea, db
@@ -75,7 +75,7 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
         pass
 
     finally:
-        ideation_room.disconnect(user)
+        await ideation_room.remove_user(user)
 
         if len(ideation_room.active_users) == 0:
             room_manager.delete_room(db, ideation_room.session_id)
