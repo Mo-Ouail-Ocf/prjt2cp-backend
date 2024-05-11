@@ -22,7 +22,8 @@ from app.services.session_service import (
     export_session_file,
     export_session,
 )
-
+from app.crud.final_decision_crud import update_final_decision, is_valid_final_decision
+from app.core.exceptions import InvalidCredentialsError
 
 router = APIRouter()
 
@@ -45,6 +46,27 @@ async def create_a_session(
     db: Session = Depends(get_db),
 ):
     return await new_session(project_id, create_data, bg_tasks, db)
+
+
+@router.post(
+    "/from_decision/{project_id}/{decision_id}", response_model=SessionResponse
+)
+async def create_session_from_final_decision(
+    _: Annotated[int, Depends(valid_project_moderator)],
+    decision_id: int,
+    create_data: SessionCreate,
+    project_id: int,
+    bg_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    if is_valid_final_decision(db, decision_id, project_id):
+        raise InvalidCredentialsError
+
+    create_data.is_from_final_decision = True
+    session_response = await new_session(project_id, create_data, bg_tasks, db)
+    update_final_decision(db, session_response.session_id, decision_id)
+
+    return session_response
 
 
 @router.put("/{session_id}", response_model=SessionResponse)

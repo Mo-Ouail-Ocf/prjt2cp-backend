@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Boolean
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import relationship
 from app.core.database import Base
@@ -17,6 +17,7 @@ class Session(Base):
     objectives = Column(Text, nullable=True)
     round_time = Column(Integer)
     nb_rounds = Column(Integer, default=1)
+    is_from_final_decision = Column(Boolean, default=False)
 
     project = relationship("Project", back_populates="sessions")
     ideas = relationship("Idea", back_populates="session")

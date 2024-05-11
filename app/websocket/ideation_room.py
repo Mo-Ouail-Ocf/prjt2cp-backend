@@ -147,7 +147,7 @@ class IdeationRoom:
             return True
 
         if len(combined_idea.source_idea_ids) < 2:
-            await self.send_msg(user.ws, "You must specify at leat 2 source ideas")
+            await self.send_msg(user.ws, "You must specify at least 2 source ideas")
             return True
 
         for source_idea_id in combined_idea.source_idea_ids:

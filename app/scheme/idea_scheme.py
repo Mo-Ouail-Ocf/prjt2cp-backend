@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 
@@ -11,6 +11,8 @@ class IdeaRequest(IdeaBase):
     content: str
     details: Optional[str]
     parent_idea_id: Optional[int]
+    idea_type: str = Field(pattern="^(?:|expended|combined)$", default="") 
+
 
 
 class IdeaCreate(IdeaRequest):
@@ -26,6 +28,7 @@ class IdeaUpdate(IdeaBase):
 
 class IdeaUpdateWS(IdeaUpdate):
     idea_id: int
+    idea_type: str = "refined"
 
 
 class IdeaResponse(IdeaCreate):
@@ -33,6 +36,7 @@ class IdeaResponse(IdeaCreate):
     creation_date: datetime
     votes: int
     deleted: bool
+    idea_type: str = Field(pattern="^(?:|expended|combined|refined)$") 
 
     class Config:
         from_attributes = True

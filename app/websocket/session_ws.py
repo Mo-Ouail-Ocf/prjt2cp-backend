@@ -27,19 +27,19 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
                 idea = IdeaRequest.model_validate(data.content)
 
                 if not await ideation_room.broadcast_idea(idea, user, db):
-                    await ideation_room.send_msg(ws, "Counldn't create idea.")
+                    await ideation_room.send_msg(ws, "Couldn't create idea.")
 
             elif data.type == "idea_update":
                 idea = IdeaUpdateWS.model_validate(data.content)
 
                 if not await ideation_room.broadcast_idea_update(user, idea, db):
-                    await ideation_room.send_msg(ws, "Counldn't update idea.")
+                    await ideation_room.send_msg(ws, "Couldn't update idea.")
 
             elif data.type == "comment":
                 comment = CommentRequest.model_validate(data.content)
 
                 if not await ideation_room.broadcast_comment(user, comment, db):
-                    await ideation_room.send_msg(ws, "Counldn't create comment.")
+                    await ideation_room.send_msg(ws, "Couldn't create comment.")
 
             elif data.type == "combined_idea":
                 combined_idea = CombinedIdeaWSCreate.model_validate(data.content)
@@ -47,7 +47,7 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
                 if not await ideation_room.broadcast_combined_idea(
                     user, combined_idea, db
                 ):
-                    await ideation_room.send_msg(ws, "Counldn't create combined idea.")
+                    await ideation_room.send_msg(ws, "Couldn't create combined idea.")
 
             elif data.type == "vote":
                 idea_id = Vote.model_validate(data.content).idea_id
@@ -61,7 +61,7 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
                 if not await ideation_room.broadcast_final_decision(
                     user, final_decision, db
                 ):
-                    await ideation_room.send_msg(ws, "Counldn't create final decision.")
+                    await ideation_room.send_msg(ws, "Couldn't create final decision.")
 
             else:
                 msg = ChatMessage.model_validate(data.content).msg
@@ -69,7 +69,7 @@ async def session_ws(ws: WebSocket, session_id: int, user_id: int, db: Session):
                 await ideation_room.broadcast_msg(user_id, msg)
 
     except ValidationError:
-        await ideation_room.send_msg(ws, "Illigal action")
+        await ideation_room.send_msg(ws, "Illegal action")
 
     except WebSocketDisconnect:
         pass

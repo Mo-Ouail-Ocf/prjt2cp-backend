@@ -14,10 +14,9 @@ class Idea(Base):
     session_id = Column(Integer, ForeignKey("sessions.session_id"))
     submitter_id = Column(Integer, ForeignKey("users.user_id"))
     votes = Column(Integer, default=0)  # For dot voting
-    parent_idea_id = Column(
-        Integer, ForeignKey("ideas.idea_id"), nullable=True
-    )  # For tracking idea expansions
+    parent_idea_id = Column( Integer, ForeignKey("ideas.idea_id"), nullable=True)  # For tracking idea expansions & brainwriting
     deleted = Column(Boolean, default=False)
+    idea_type = Column(Text, default="")
 
     session = relationship("Session", back_populates="ideas")
     submitter = relationship("User", back_populates="ideas")

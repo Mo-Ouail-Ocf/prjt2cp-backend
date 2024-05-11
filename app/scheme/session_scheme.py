@@ -14,6 +14,7 @@ class SessionCreate(BaseModel):
     objectives: Optional[str] = None
     round_time: int
     nb_rounds: int = 1
+    is_from_final_decision: bool = False
 
 
 class SessionUpdate(BaseModel):
@@ -27,6 +28,7 @@ class SessionResponse(SessionCreate):
     session_status: str = Field(pattern="open|started|closed")
     start_time: datetime
     project_id: int
+    is_from_final_decision: bool
 
     class Config:
         from_attributes = True

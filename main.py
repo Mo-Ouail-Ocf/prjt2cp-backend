@@ -10,6 +10,7 @@ from app.core.database import Base, engine
 
 app = FastAPI(
     title="Backend",
+    debug=True,
     swagger_ui_init_oauth={
         "clientId": GOOGLE_CLIENT_ID,
         "appName": "Backned",
