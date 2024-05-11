@@ -15,7 +15,7 @@ class FinalDecisionCreate(FinalDecisionRequest):
 class FinalDecisionResponse(FinalDecisionCreate):
     decision_id: int
     decision_date: datetime
-    new_session_id: Optional[int]=None
+    new_session_id: Optional[int]
 
     class Config:
         from_attributes = True
