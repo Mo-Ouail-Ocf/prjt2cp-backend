@@ -155,6 +155,7 @@ class IdeationRoom:
                 return False
 
         try:
+            combined_idea.idea.idea_type="combined"
             idea = IdeaCreate(
                 **combined_idea.idea.model_dump(),
                 submitter_id=user.user_id,
@@ -164,6 +165,7 @@ class IdeationRoom:
             idea = create_idea(db, idea)
             data = BroadCast(type="idea", content=idea)
 
+            self.ideas.append(idea.idea_id)
             await self.broadcast(data)
 
             for source_idea_id in combined_idea.source_idea_ids:
@@ -175,7 +177,8 @@ class IdeationRoom:
                 data = BroadCast(type="combined_idea", content=combined_idea)
                 await self.broadcast(data)
             return True
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     async def broadcast_comment(
