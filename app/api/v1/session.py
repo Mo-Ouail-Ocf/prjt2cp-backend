@@ -59,7 +59,7 @@ async def create_session_from_final_decision(
     bg_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
-    if is_valid_final_decision(db, decision_id, project_id):
+    if not is_valid_final_decision(db, decision_id, project_id):
         raise InvalidCredentialsError
 
     create_data.is_from_final_decision = True
