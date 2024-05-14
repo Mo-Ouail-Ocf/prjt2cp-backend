@@ -160,7 +160,6 @@ class IdeationRoom:
                 **combined_idea.idea.model_dump(),
                 submitter_id=user.user_id,
                 session_id=self.session_id,
-                idea_type="combined"
             )
 
             idea = create_idea(db, idea)
