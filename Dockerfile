@@ -2,15 +2,15 @@
 
 FROM python:3.11.8
 
-WORKDIR /tikta
+WORKDIR /synaps
 
-COPY ./requirements.txt ./tikta/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r ./tikta/requirements.txt
+COPY ./requirements.txt ./synaps/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r ./synaps/requirements.txt
 
-COPY ./app /tikta/app
-COPY ./resources /tikta/resources
-COPY ./init.py /tikta/init.py
-COPY ./main.py /tikta/main.py
-COPY ./run.sh /tikta/run.sh
+COPY ./app /synaps/app
+COPY ./resources /synaps/resources
+COPY ./init.py /synaps/init.py
+COPY ./main.py /synaps/main.py
+COPY ./run.sh /synaps/run.sh
 
 CMD ["sh", "./run.sh"]

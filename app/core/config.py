@@ -8,7 +8,7 @@ load_dotenv()
 
 scopes = "email https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file"
 
-GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_ID = getenv("VITE_GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = getenv("GOOGLE_CLIENT_SECRET", "")
 
 ACCESS_TOKEN_SECRET_KEY = getenv("ACCESS_TOKEN_SECRET_KEY", "")

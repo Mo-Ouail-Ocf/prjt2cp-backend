@@ -47,7 +47,7 @@ async def get_drive_directory_id(user_creds: UserCreds) -> str:
 
             res = await aiogoogle.as_user(
                 drive_v3.files.list(
-                    q="name='tikta' and mimeType='application/vnd.google-apps.folder'"
+                    q="name='Synaps' and mimeType='application/vnd.google-apps.folder'"
                 )
             )
 
@@ -57,7 +57,7 @@ async def get_drive_directory_id(user_creds: UserCreds) -> str:
             req = drive_v3.files.create(
                 fields="id",
                 json={
-                    "name": "tikta",
+                    "name": "Synaps",
                     "mimeType": "application/vnd.google-apps.folder",
                 },
             )
